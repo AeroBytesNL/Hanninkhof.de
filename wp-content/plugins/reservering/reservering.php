@@ -360,6 +360,118 @@ function reservation_financial_page() {
 
     <hr>
 
+    <div class="container">
+        <h1>Statistieken</h1>
+        <div class="row">
+            <div class="col-sm bg-dark text-white rounded p-2 m-2">
+                <h5 class="text-center">Totale omzet 2024</h5>
+                <br>
+                <h5 class="text-center">30 euro</h5>
+            </div>
+            <div class="col-sm bg-dark text-white rounded p-2 m-2">
+                <h5 class="text-center">Aantal dagen verhuurd 2024</h5>
+                <br>
+                <h5 class="text-center">30 dagen</h5>
+            </div>
+            <div class="col-sm bg-dark text-white rounded p-2 m-2">
+                <h5 class="text-center">Aantal klanten die gehuurd hebben 2024</h5>
+                <br>
+                <h5 class="text-center">30 klanten</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Laatste x boekingen</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Datum</th>
+                <th scope="col">Huis</th>
+                <th scope="col">Naam</th>
+                <th scope="col">Totale prijs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>29-11-2024</td>
+                    <td>Voorbeeld huis 1</td>
+                    <td>Kelvin</td>
+                    <td>30 euro</td>
+                </tr>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>29-11-2024</td>
+                    <td>Voorbeeld huis 2</td>
+                    <td>Kelvin</td>
+                    <td>30 euro</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h1>Exporteer</h1>
+        <div class="row">
+            <div class="col-sm">
+                <div class="ps-2">
+                    <h6>Maak een rapport</h6>
+                </div>
+
+                <div class="form-group mt-2 p-2">
+                    <h5 class="text-dark font-weight-bold">Start datum</h5>
+                    <input type="date" id="date" name="date" class="form-control" value="" required>
+                </div>
+
+                <div class="form-group mt-2 p-2">
+                    <h5 class="text-dark font-weight-bold">Eind datum</h5>
+                    <input type="date" id="date" name="date" class="form-control" value="" required>
+                </div>
+
+                <div class="mt-2 p-2">
+                    <button type="button" class="btn btn-success">Maak omzet rapport</button>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="ps-2">
+                    <h6>Gemaakte rapportages</h6>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Naam</th>
+                            <th scope="col">Datum</th>
+                            <th scope="col">Gemaakt door</th>
+                            <th scope="col">Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">rapport_van_29_11_tot_29_11_jr_2024.pdf</th>
+                            <td>29-11-2024</td>
+                            <td>Kelvin de Reus</td>
+                            <td>
+                                <a href="#"><span class="dashicons dashicons-download"></span></a>
+                                <a href="#"><span class="dashicons dashicons-trash"></span></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">rapport_van_29_11_tot_29_11_jr_2024.pdf</th>
+                            <td>29-11-2024</td>
+                            <td>Kelvin de Reus</td>
+                            <td>
+                                <a href="#"><span class="dashicons dashicons-download"></span></a>
+                                <a href="#"><span class="dashicons dashicons-trash"></span></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <?php
 }
