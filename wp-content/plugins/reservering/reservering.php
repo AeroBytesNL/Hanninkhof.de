@@ -10,12 +10,12 @@ Author URI: https://auticodes.nl
 
 function create_menus() {
     add_menu_page(
-        'Reserveringen', // page title
-        'Reserveringen', // Title in admin menu side bar
+        'Reserveringen',
+        'Reserveringen',
         'edit_theme_options',
-        'reserveringen', // slug
-        'reservation_options_page',  // to render
-        'dashicons-admin-home' // sidebar item icon
+        'reserveringen',
+        'reservation_options_page',
+        'dashicons-admin-home'
       );
 
     add_dashboard_page(
@@ -71,11 +71,11 @@ add_action('admin_menu', 'create_menus');
 function reservation_options_page() {
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/style.css">
 
     <h1 class="mt-2 ml-2">Reserveringen</h1>
 
     <hr>
-
     <table class="table table-striped">
         <thead>
             <tr>
@@ -135,6 +135,10 @@ function reservation_options_page() {
         </tbody>
     </table>
 
+	<script src="js/jquery.min.js"></script>
+  	<script src="js/popper.js"></script>
+  	<script src="js/bootstrap.min.js"></script>
+  	<script src="js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <?php
 }
@@ -299,12 +303,13 @@ function reservation_houses_page() {
         </a>
     </div>
 
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
             <th scope="col">ID</th>
             <th scope="col">Foto</th>
             <th scope="col">Naam</th>
+            <th scope="col">Prijs</th>
             <th scope="col">Acties</th>
             </tr>
         </thead>
@@ -313,6 +318,7 @@ function reservation_houses_page() {
                 <th scope="row">2</th>
                 <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
                 <td>Huis i</td>
+                <td>70,-</td>
                 <td>
                     <a href="">
                         <span class="dashicons dashicons-edit"></span>
@@ -326,6 +332,7 @@ function reservation_houses_page() {
                 <th scope="row">1</th>
                 <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
                 <td>Huis x</td>
+                <td>70,-</td>
                 <td>
                     <a href="">
                         <span class="dashicons dashicons-edit"></span>
