@@ -1,5 +1,5 @@
 # Hanninkhof.de
-The new frontend i made on payroll for hanninkhof.de
+An booking system created for WordPress
 
 # Built with
 * HTML
