@@ -121,8 +121,8 @@ function reservation_options_page() {
             <li><strong>16</strong></li>
             <li><strong>17</strong></li>
             <li><strong>18</strong></li>
-            <li><strong>19</strong></li>
-            <li><strong>20</strong></li>
+            <li><span class="badge text-bg-warning p-2"><strong>19</strong></span></li>
+            <li><span class="badge text-bg-warning p-2"><strong>20</strong></span></li>
             <li><strong>21</strong></li>
             <li><strong>22</strong></li>
             <li><strong>23</strong></li>
@@ -137,6 +137,7 @@ function reservation_options_page() {
         </ul>
 
         <p>Al geboekt: <span class="badge text-bg-danger p-2">&nbsp;</span></p>
+        <p>Nog niet bevestigd: <span class="badge text-bg-warning p-2">&nbsp;</span></p>
         <p>Niet geboekt: Kleurloos</p>
     </div>
 
@@ -351,85 +352,87 @@ function reservation_customers_page() {
 
     <hr>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Voornaam</th>
-                <th scope="col">Achternaam</th>
-                <th scope="col">Geboortedatum</th>
-                <th scope="col">Nat.</th>
-                <th scope="col">Adres</th>
-                <th scope="col">Woonplaats</th>
-                <th scope="col">Postcode</th>
-                <th scope="col">Email</th>
-                <th scope="col">Telefoon</th>
-                <th scope="col">ID/Paspoort nmr.</th>
-                <th scope="col">Opties</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td scope="row">Kelvin</td>
-                <td>de Reus</td>
-                <td>11-05-2001</td>
-                <td>NL</td>
-                <td>Voorbeeldstraat 1</td>
-                <td>Groenlo</td>
-                <td>1234AB</td>
-                <td>voorbeeld@domein.nl</td>
-                <td>06123456790</td>
-                <td>00000000</td>
-                <td>
-                    <a href="">
-                        <span class="dashicons dashicons-edit"></span>
-                    </a>
-                    <a href="">
-                        <span class="dashicons dashicons-trash"></span>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td scope="row">Kelvin</td>
-                <td>de Reus</td>
-                <td>11-05-2001</td>
-                <td>NL</td>
-                <td>Voorbeeldstraat 1</td>
-                <td>Groenlo</td>
-                <td>1234AB</td>
-                <td>voorbeeld@domein.nl</td>
-                <td>06123456790</td>
-                <td>00000000</td>
-                <td>
-                    <a href="">
-                        <span class="dashicons dashicons-edit"></span>
-                    </a>
-                    <a href="">
-                        <span class="dashicons dashicons-trash"></span>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td scope="row">Kelvin</td>
-                <td>de Reus</td>
-                <td>11-05-2001</td>
-                <td>NL</td>
-                <td>Voorbeeldstraat 1</td>
-                <td>Groenlo</td>
-                <td>1234AB</td>
-                <td>voorbeeld@domein.nl</td>
-                <td>06123456790</td>
-                <td>00000000</td>
-                <td>
-                    <a href="">
-                        <span class="dashicons dashicons-edit"></span>
-                    </a>
-                    <a href="">
-                        <span class="dashicons dashicons-trash"></span>
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Voornaam</th>
+                    <th scope="col">Achternaam</th>
+                    <th scope="col">Geboortedatum</th>
+                    <th scope="col">Nat.</th>
+                    <th scope="col">Adres</th>
+                    <th scope="col">Woonplaats</th>
+                    <th scope="col">Postcode</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Telefoon</th>
+                    <th scope="col">ID/Paspoort nmr.</th>
+                    <th scope="col">Opties</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">Kelvin</td>
+                    <td>de Reus</td>
+                    <td>11-05-2001</td>
+                    <td>NL</td>
+                    <td>Voorbeeldstraat 1</td>
+                    <td>Groenlo</td>
+                    <td>1234AB</td>
+                    <td>voorbeeld@domein.nl</td>
+                    <td>06123456790</td>
+                    <td>00000000</td>
+                    <td>
+                        <a href="">
+                            <span class="dashicons dashicons-edit"></span>
+                        </a>
+                        <a href="">
+                            <span class="dashicons dashicons-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="row">Kelvin</td>
+                    <td>de Reus</td>
+                    <td>11-05-2001</td>
+                    <td>NL</td>
+                    <td>Voorbeeldstraat 1</td>
+                    <td>Groenlo</td>
+                    <td>1234AB</td>
+                    <td>voorbeeld@domein.nl</td>
+                    <td>06123456790</td>
+                    <td>00000000</td>
+                    <td>
+                        <a href="">
+                            <span class="dashicons dashicons-edit"></span>
+                        </a>
+                        <a href="">
+                            <span class="dashicons dashicons-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="row">Kelvin</td>
+                    <td>de Reus</td>
+                    <td>11-05-2001</td>
+                    <td>NL</td>
+                    <td>Voorbeeldstraat 1</td>
+                    <td>Groenlo</td>
+                    <td>1234AB</td>
+                    <td>voorbeeld@domein.nl</td>
+                    <td>06123456790</td>
+                    <td>00000000</td>
+                    <td>
+                        <a href="">
+                            <span class="dashicons dashicons-edit"></span>
+                        </a>
+                        <a href="">
+                            <span class="dashicons dashicons-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <?php
@@ -446,53 +449,55 @@ function reservation_houses_page() {
 
     <hr>
 
-    <div class="mt-2 mb-2">
-        <a href="#">
-            <button type="button" class="btn btn-success">Toevoegen</button>
-        </a>
-    </div>
+    <div class="container">
+        <div class="mt-2 mb-2">
+            <a href="#">
+                <button type="button" class="btn btn-success">Toevoegen</button>
+            </a>
+        </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Foto</th>
-            <th scope="col">Naam</th>
-            <th scope="col">Prijs</th>
-            <th scope="col">Acties</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">2</th>
-                <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
-                <td>Huis i</td>
-                <td>70,-</td>
-                <td>
-                    <a href="">
-                        <span class="dashicons dashicons-edit"></span>
-                    </a>
-                    <a href="">
-                        <span class="dashicons dashicons-trash"></span>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
-                <td>Huis x</td>
-                <td>70,-</td>
-                <td>
-                    <a href="">
-                        <span class="dashicons dashicons-edit"></span>
-                    </a>
-                    <a href="">
-                        <span class="dashicons dashicons-trash"></span>
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Naam</th>
+                <th scope="col">Prijs</th>
+                <th scope="col">Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">2</th>
+                    <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
+                    <td>Huis i</td>
+                    <td>70,-</td>
+                    <td>
+                        <a href="">
+                            <span class="dashicons dashicons-edit"></span>
+                        </a>
+                        <a href="">
+                            <span class="dashicons dashicons-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">1</th>
+                    <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
+                    <td>Huis x</td>
+                    <td>70,-</td>
+                    <td>
+                        <a href="">
+                            <span class="dashicons dashicons-edit"></span>
+                        </a>
+                        <a href="">
+                            <span class="dashicons dashicons-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <?php
