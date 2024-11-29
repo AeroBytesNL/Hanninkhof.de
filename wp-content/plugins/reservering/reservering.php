@@ -76,64 +76,213 @@ function reservation_options_page() {
     <h1 class="mt-2 ml-2">Reserveringen</h1>
 
     <hr>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Huis/kamer</th>
-                <th scope="col">Naam</th>
-                <th scope="col">Begin datum</th>
-                <th scope="col">Eind datum</th>
-                <th scope="col">Aangemaakt op</th>
-                <th scope="col">Aantal nachten</th>
-                <th scope="col">Betaling status</th>
-                <th scope="col">Status</th>
-                <th scope="col">Weergeven</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td scope="row">2</td>
-                <td><a href="#">Voorbeeld huis</a></td>
-                <td><a href="#">Kelvin de Reus</a></td>
-                <td>29-11-2024</td>
-                <td>30-11-2024</td>
-                <td>29-11-2024</td>
-                <td>1</td>
-                <td>
-                    <span class="badge text-bg-danger">NIET BETAALD</span>
-                </td>
-                <td>
-                    <span class="badge text-bg-danger">IN BEHANDELING</span>
-                </td>
-                <td>
-                    <a href="/wp-admin/index.php?page=reservering-weergeven">
-                        <button type="button" class="btn btn-info">Weergeven</button>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td scope="row">1</td>
-                <td><a href="#">Voorbeeld huis</a></td>
-                <td><a href="#">Kelvin de Reus</a></td>
-                <td>29-11-2024</td>
-                <td>30-11-2024</td>
-                <td>29-11-2024</td>
-                <td>1</td>
-                <td>
-                    <span class="badge text-bg-success">BETAALD</span>
-                </td>
-                <td>
-                    <span class="badge text-bg-success">BEHANDELD</span>
-                </td>
-                <td>
-                    <a href="/wp-admin/index.php?page=reservering-weergeven">
-                        <button type="button" class="btn btn-info">Weergeven</button>
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+
+
+    <div class="container">
+        <h1>Kalender</h1>
+
+        <div class="month">
+            <ul>
+                <li class="prev">&#10094;</li>
+                <li class="next">&#10095;</li>
+                <li>
+                November<br>
+                <span style="font-size:18px">2025</span>
+                </li>
+            </ul>
+        </div>
+
+        <ul class="weekdays">
+            <li>Maandag</li>
+            <li>Dinsdag</li>
+            <li>Woensdag</li>
+            <li>Donderdag</li>
+            <li>Vrijdag</li>
+            <li>Zaterdag</li>
+            <li>Zondag</li>
+        </ul>
+
+        <ul class="days">
+            <li><strong>1</strong></li>
+            <li><strong>2</strong></li>
+            <li><strong>3</strong></li>
+            <li><strong>4</strong></li>
+            <li><strong>5</strong></li>
+            <li><strong>6</strong></li>
+            <li><strong>7</strong></li>
+            <li><span class="badge text-bg-danger p-2"><strong>8</strong></span></li>
+            <li><span class="badge text-bg-danger p-2"><strong>9</strong></li>
+            <li><span class="badge text-bg-danger p-2"><strong>10</strong></span></li>
+            <li><strong>11</strong></li>
+            <li><strong>12</strong></li>
+            <li><strong>13</strong></li>
+            <li><strong>14</strong></li>
+            <li><strong>15</strong></li>
+            <li><strong>16</strong></li>
+            <li><strong>17</strong></li>
+            <li><strong>18</strong></li>
+            <li><strong>19</strong></li>
+            <li><strong>20</strong></li>
+            <li><strong>21</strong></li>
+            <li><strong>22</strong></li>
+            <li><strong>23</strong></li>
+            <li><strong>24</strong></li>
+            <li><strong>25</strong></li>
+            <li><strong>26</strong></li>
+            <li><strong>27</strong></li>
+            <li><strong>28</strong></li>
+            <li><strong>29</strong></li>
+            <li><strong>30</strong></li>
+            <li><strong>31</strong></li>
+        </ul>
+
+        <p>Al geboekt: <span class="badge text-bg-danger p-2">&nbsp;</span></p>
+        <p>Niet geboekt: Kleurloos</p>
+    </div>
+
+    <div class="container">
+        <h1>Boekingen</h1>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Huis/kamer</th>
+                    <th scope="col">Naam</th>
+                    <th scope="col">Begin datum</th>
+                    <th scope="col">Eind datum</th>
+                    <th scope="col">Aangemaakt op</th>
+                    <th scope="col">Aantal nachten</th>
+                    <th scope="col">Betaling status</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Weergeven</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">2</td>
+                    <td><a href="#">Voorbeeld huis</a></td>
+                    <td><a href="#">Kelvin de Reus</a></td>
+                    <td>29-11-2024</td>
+                    <td>30-11-2024</td>
+                    <td>29-11-2024</td>
+                    <td>1</td>
+                    <td>
+                        <span class="badge text-bg-danger">NIET BETAALD</span>
+                    </td>
+                    <td>
+                        <span class="badge text-bg-danger">IN BEHANDELING</span>
+                    </td>
+                    <td>
+                        <a href="/wp-admin/index.php?page=reservering-weergeven">
+                            <button type="button" class="btn btn-info">Weergeven</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="row">1</td>
+                    <td><a href="#">Voorbeeld huis</a></td>
+                    <td><a href="#">Kelvin de Reus</a></td>
+                    <td>29-11-2024</td>
+                    <td>30-11-2024</td>
+                    <td>29-11-2024</td>
+                    <td>1</td>
+                    <td>
+                        <span class="badge text-bg-success">BETAALD</span>
+                    </td>
+                    <td>
+                        <span class="badge text-bg-success">BEHANDELD</span>
+                    </td>
+                    <td>
+                        <a href="/wp-admin/index.php?page=reservering-weergeven">
+                            <button type="button" class="btn btn-info">Weergeven</button>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+
+        .month {
+            padding: 10px 25px;
+            width: 100%;
+            background: #1d2327;
+            text-align: center;
+        }
+
+        .month ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .month ul li {
+            color: white;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .month .prev {
+            float: left;
+            padding-top: 10px;
+        }
+
+        .month .next {
+            float: right;
+            padding-top: 10px;
+        }
+
+        .weekdays {
+            margin: 0;
+            padding: 10px 0;
+            background-color: #ddd;
+        }
+
+        .weekdays li {
+            display: inline-block;
+            width: 13.6%;
+            color: #666;
+            text-align: center;
+        }
+
+        .days {
+            padding: 10px 0;
+            background: #eee;
+            margin: 0;
+        }
+
+        .days li {
+            list-style-type: none;
+            display: inline-block;
+            width: 13.6%;
+            text-align: center;
+            margin-bottom: 5px;
+            font-size:12px;
+            color: #777;
+        }
+
+        .days li .active {
+            padding: 5px;
+            background: #1abc9c;
+            color: white !important
+        }
+
+        /* Add media queries for smaller screens */
+        @media screen and (max-width:720px) {
+            .weekdays li, .days li {width: 13.1%;}
+        }
+
+        @media screen and (max-width: 420px) {
+            .weekdays li, .days li {width: 12.5%;}
+            .days li .active {padding: 2px;}
+        }
+
+        @media screen and (max-width: 290px) {
+            .weekdays li, .days li {width: 12.2%;}
+        }
+    </style>
 
 	<script src="js/jquery.min.js"></script>
   	<script src="js/popper.js"></script>
