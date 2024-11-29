@@ -18,6 +18,14 @@ function create_menus() {
         'dashicons-admin-home' // sidebar item icon
       );
 
+    add_dashboard_page(
+        'Reservering weergeven',
+        '',
+        'manage_options',
+        'reservering-weergeven',
+        'reservation_view_page',
+    );
+
     add_submenu_page(
         'reserveringen',
         'Klanten',
@@ -34,6 +42,15 @@ function create_menus() {
         'manage_options',
         'reserveringen-huizen',
         'reservation_houses_page',
+    );
+
+    add_submenu_page(
+        'reserveringen',
+        'Instellingen',
+        'Instellingen',
+        'manage_options',
+        'reserveringen-instellingen',
+        'reservation_settings_page',
     );
 }
 
@@ -81,7 +98,7 @@ function reservation_options_page() {
                     <span class="badge text-bg-danger">IN BEHANDELING</span>
                 </td>
                 <td>
-                    <a href="">
+                    <a href="/wp-admin/index.php?page=reservering-weergeven">
                         <button type="button" class="btn btn-info">Weergeven</button>
                     </a>
                 </td>
@@ -101,13 +118,61 @@ function reservation_options_page() {
                     <span class="badge text-bg-success">BEHANDELD</span>
                 </td>
                 <td>
-                    <a href="">
+                    <a href="/wp-admin/index.php?page=reservering-weergeven">
                         <button type="button" class="btn btn-info">Weergeven</button>
                     </a>
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <?php
+}
+
+/**
+ * Shows an specific reservation
+ */
+function reservation_view_page() {
+    ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <h1 class="mt-2 ml-2">Reservering #1</h1>
+
+    <hr>
+
+    <div class="container text-center ">
+        <h1>Reservering #1</h1>
+
+        <img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 120px;">
+        <p>Huis: Voorbeeld huis 1</p>
+
+        <form class="w-25 text-center ">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Naam</label>
+                <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg" aria-label=".form-control-lg example">
+            </div>
+
+            <div class="mb-3">
+
+            </div>
+
+            <div class="mb-3">
+
+            </div>
+            <div class="mb-3">
+
+            </div>
+
+            <div class="mb-3">
+
+            </div>
+
+            <div class="mb-3">
+
+            </div>
+        </form>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <?php
@@ -216,6 +281,66 @@ function reservation_houses_page() {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
     <h1 class="mt-2 ml-2">Huizen</h1>
+
+    <hr>
+
+    <div class="mt-2 mb-2">
+        <a href="#">
+            <button type="button" class="btn btn-success">Toevoegen</button>
+        </a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Naam</th>
+            <th scope="col">Acties</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">2</th>
+                <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
+                <td>Huis i</td>
+                <td>
+                    <a href="">
+                        <span class="dashicons dashicons-edit"></span>
+                    </a>
+                    <a href="">
+                        <span class="dashicons dashicons-trash"></span>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">1</th>
+                <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
+                <td>Huis x</td>
+                <td>
+                    <a href="">
+                        <span class="dashicons dashicons-edit"></span>
+                    </a>
+                    <a href="">
+                        <span class="dashicons dashicons-trash"></span>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <?php
+}
+
+/**
+ * The settings page
+ */
+function reservation_settings_page() {
+    ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <h1 class="mt-2 ml-2">Instellingen</h1>
 
     <hr>
 
