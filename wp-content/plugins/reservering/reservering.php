@@ -18,9 +18,10 @@ function create_menus() {
         'dashicons-admin-home'
       );
 
-    add_dashboard_page(
-        'Reservering weergeven',
+    add_submenu_page(
         '',
+        'Weergeven',
+        'Weergeven',
         'manage_options',
         'reservering-weergeven',
         'reservation_view_page',
@@ -76,7 +77,6 @@ function reservation_options_page() {
     <h1 class="mt-2 ml-2">Reserveringen</h1>
 
     <hr>
-
 
     <div class="container">
         <div class="month">
@@ -170,7 +170,7 @@ function reservation_options_page() {
                     </td>
                     <td>
                         <a href="/wp-admin/index.php?page=reservering-weergeven">
-                            <button type="button" class="btn btn-info">Weergeven</button>
+                            <span class="dashicons dashicons-search"></span>
                         </a>
                     </td>
                 </tr>
@@ -189,7 +189,7 @@ function reservation_options_page() {
                     </td>
                     <td>
                         <a href="/wp-admin/index.php?page=reservering-weergeven">
-                            <button type="button" class="btn btn-info">Weergeven</button>
+                            <span class="dashicons dashicons-search"></span>
                         </a>
                     </td>
                 </tr>
@@ -656,3 +656,157 @@ function reservation_settings_page() {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <?php
 }
+
+function booking_form() {
+    ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/style.css">
+
+    <div class="container mt-3">
+        <div class="month">
+            <ul>
+                <li class="prev">&#10094;</li>
+                <li class="next">&#10095;</li>
+                <li>
+                November<br>
+                <span style="font-size:18px">2025</span>
+                </li>
+            </ul>
+        </div>
+
+        <ul class="weekdays">
+            <li>Maandag</li>
+            <li>Dinsdag</li>
+            <li>Woensdag</li>
+            <li>Donderdag</li>
+            <li>Vrijdag</li>
+            <li>Zaterdag</li>
+            <li>Zondag</li>
+        </ul>
+
+        <ul class="days">
+            <li><strong>1</strong></li>
+            <li><strong>2</strong></li>
+            <li><strong>3</strong></li>
+            <li><strong>4</strong></li>
+            <li><strong>5</strong></li>
+            <li><strong>6</strong></li>
+            <li><strong>7</strong></li>
+            <li><span class="badge text-bg-danger p-2"><strong>8</strong></span></li>
+            <li><span class="badge text-bg-danger p-2"><strong>9</strong></li>
+            <li><span class="badge text-bg-danger p-2"><strong>10</strong></span></li>
+            <li><strong>11</strong></li>
+            <li><strong>12</strong></li>
+            <li><strong>13</strong></li>
+            <li><strong>14</strong></li>
+            <li><strong>15</strong></li>
+            <li><strong>16</strong></li>
+            <li><strong>17</strong></li>
+            <li><strong>18</strong></li>
+            <li><span class="badge text-bg-warning p-2"><strong>19</strong></span></li>
+            <li><span class="badge text-bg-warning p-2"><strong>20</strong></span></li>
+            <li><strong>21</strong></li>
+            <li><strong>22</strong></li>
+            <li><strong>23</strong></li>
+            <li><strong>24</strong></li>
+            <li><strong>25</strong></li>
+            <li><strong>26</strong></li>
+            <li><strong>27</strong></li>
+            <li><strong>28</strong></li>
+            <li><strong>29</strong></li>
+            <li><strong>30</strong></li>
+            <li><strong>31</strong></li>
+        </ul>
+
+        <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span> Onbevestigt: <span class="badge text-bg-warning p-2 mr-3">&nbsp;</span></p>
+    </div>
+
+    <style>
+        .month {
+            padding: 10px 25px;
+            width: 100%;
+            background: #1d2327;
+            text-align: center;
+        }
+
+        .month ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .month ul li {
+            color: white;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .month .prev {
+            float: left;
+            padding-top: 10px;
+        }
+
+        .month .next {
+            float: right;
+            padding-top: 10px;
+        }
+
+        .weekdays {
+            margin: 0;
+            padding: 10px 0;
+            background-color: #ddd;
+        }
+
+        .weekdays li {
+            display: inline-block;
+            width: 13.6%;
+            color: #666;
+            text-align: center;
+        }
+
+        .days {
+            padding: 10px 0;
+            background: #eee;
+            margin: 0;
+        }
+
+        .days li {
+            list-style-type: none;
+            display: inline-block;
+            width: 13.6%;
+            text-align: center;
+            margin-bottom: 5px;
+            font-size:12px;
+            color: #777;
+        }
+
+        .days li .active {
+            padding: 5px;
+            background: #1abc9c;
+            color: white !important
+        }
+
+        /* Add media queries for smaller screens */
+        @media screen and (max-width:720px) {
+            .weekdays li, .days li {width: 13.1%;}
+        }
+
+        @media screen and (max-width: 420px) {
+            .weekdays li, .days li {width: 12.5%;}
+            .days li .active {padding: 2px;}
+        }
+
+        @media screen and (max-width: 290px) {
+            .weekdays li, .days li {width: 12.2%;}
+        }
+    </style>
+
+	<script src="js/jquery.min.js"></script>
+  	<script src="js/popper.js"></script>
+  	<script src="js/bootstrap.min.js"></script>
+  	<script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <?php
+}
+
+add_shortcode('booking_form', 'booking_form');
