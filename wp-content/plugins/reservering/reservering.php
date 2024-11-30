@@ -79,8 +79,6 @@ function reservation_options_page() {
 
 
     <div class="container">
-        <h1>Kalender</h1>
-
         <div class="month">
             <ul>
                 <li class="prev">&#10094;</li>
@@ -136,23 +134,20 @@ function reservation_options_page() {
             <li><strong>31</strong></li>
         </ul>
 
-        <p>Al geboekt: <span class="badge text-bg-danger p-2">&nbsp;</span></p>
-        <p>Nog niet bevestigd: <span class="badge text-bg-warning p-2">&nbsp;</span></p>
-        <p>Niet geboekt: Kleurloos</p>
+        <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span> Onbevestigt: <span class="badge text-bg-warning p-2 mr-3">&nbsp;</span></p>
     </div>
 
     <div class="container">
-        <h1>Boekingen</h1>
+        <h1>Overzicht</h1>
 
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Huis/kamer</th>
                     <th scope="col">Naam</th>
-                    <th scope="col">Begin datum</th>
-                    <th scope="col">Eind datum</th>
-                    <th scope="col">Aangemaakt op</th>
+                    <th scope="col">Aankomst</th>
+                    <th scope="col">Vertrek</th>
+                    <th scope="col">Geboekt op</th>
                     <th scope="col">Aantal nachten</th>
                     <th scope="col">Betaling status</th>
                     <th scope="col">Status</th>
@@ -161,9 +156,8 @@ function reservation_options_page() {
             </thead>
             <tbody>
                 <tr>
-                    <td scope="row">2</td>
                     <td><a href="#">Voorbeeld huis</a></td>
-                    <td><a href="#">Kelvin de Reus</a></td>
+                    <td><a href="#">K. de Reus</a></td>
                     <td>29-11-2024</td>
                     <td>30-11-2024</td>
                     <td>29-11-2024</td>
@@ -181,9 +175,8 @@ function reservation_options_page() {
                     </td>
                 </tr>
                 <tr>
-                    <td scope="row">1</td>
                     <td><a href="#">Voorbeeld huis</a></td>
-                    <td><a href="#">Kelvin de Reus</a></td>
+                    <td><a href="#">K. de Reus</a></td>
                     <td>29-11-2024</td>
                     <td>30-11-2024</td>
                     <td>29-11-2024</td>
