@@ -496,16 +496,14 @@ function reservation_houses_page() {
             <thead>
                 <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Foto</th>
                 <th scope="col">Naam</th>
-                <th scope="col">Prijs</th>
+                <th scope="col">Prijs p.p</th>
                 <th scope="col">Acties</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <th scope="row">2</th>
-                    <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
                     <td>Huis i</td>
                     <td>70,-</td>
                     <td>
@@ -519,7 +517,6 @@ function reservation_houses_page() {
                 </tr>
                 <tr>
                     <th scope="row">1</th>
-                    <td><img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 25px;"></td>
                     <td>Huis x</td>
                     <td>70,-</td>
                     <td>
@@ -550,8 +547,24 @@ function reservation_create_house_page() {
 
     <hr>
 
-    <div class="container">
+    <div class="container" style="max-width: 300px;">
+        <div class="mb-3">
+            <label for="home_name" class="form-label">Huis naam</label>
+            <input type="text" class="form-control" id="home_name" aria-describedby="">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">€</span>
+            <input type="text" class="form-control" aria-label="">
+            <span class="input-group-text">.00</span>
+        </div>
 
+        <div class="input-group mb-3">
+            <span class="input-group-text">€</span>
+            <input type="text" class="form-control" aria-label="">
+            <span class="input-group-text">.00</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Opslaan</button>
     </div
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
