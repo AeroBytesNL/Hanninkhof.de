@@ -724,63 +724,176 @@ function booking_form() {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css">
 
-    <div class="container mt-3">
-        <div class="month">
-            <ul>
-                <li class="prev">&#10094;</li>
-                <li class="next">&#10095;</li>
-                <li>
-                November<br>
-                <span style="font-size:18px">2025</span>
-                </li>
+    <div class="container mt-3" style="max-width: 700px;">
+        <form>
+            <div class="month">
+                <ul>
+                    <li class="prev">&#10094;</li>
+                    <li class="next">&#10095;</li>
+                    <li>
+                    November<br>
+                    <span style="font-size:18px">2025</span>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="weekdays">
+                <li>Maandag</li>
+                <li>Dinsdag</li>
+                <li>Woensdag</li>
+                <li>Donderdag</li>
+                <li>Vrijdag</li>
+                <li>Zaterdag</li>
+                <li>Zondag</li>
             </ul>
-        </div>
 
-        <ul class="weekdays">
-            <li>Maandag</li>
-            <li>Dinsdag</li>
-            <li>Woensdag</li>
-            <li>Donderdag</li>
-            <li>Vrijdag</li>
-            <li>Zaterdag</li>
-            <li>Zondag</li>
-        </ul>
+            <ul class="days">
+                <li><strong>1</strong></li>
+                <li><strong>2</strong></li>
+                <li><strong>3</strong></li>
+                <li><strong>4</strong></li>
+                <li><strong>5</strong></li>
+                <li><strong>6</strong></li>
+                <li><strong>7</strong></li>
+                <li><span class="badge text-bg-danger p-2"><strong>8</strong></span></li>
+                <li><span class="badge text-bg-danger p-2"><strong>9</strong></li>
+                <li><span class="badge text-bg-danger p-2"><strong>10</strong></span></li>
+                <li><strong>11</strong></li>
+                <li><strong>12</strong></li>
+                <li><strong>13</strong></li>
+                <li><strong>14</strong></li>
+                <li><strong>15</strong></li>
+                <li><strong>16</strong></li>
+                <li><strong>17</strong></li>
+                <li><strong>18</strong></li>
+                <li><strong>19</strong></span></li>
+                <li><strong>20</strong></span></li>
+                <li><strong>21</strong></li>
+                <li><strong>22</strong></li>
+                <li><strong>23</strong></li>
+                <li><strong>24</strong></li>
+                <li><strong>25</strong></li>
+                <li><strong>26</strong></li>
+                <li><strong>27</strong></li>
+                <li><strong>28</strong></li>
+                <li><strong>29</strong></li>
+                <li><strong>30</strong></li>
+                <li><strong>31</strong></li>
+            </ul>
 
-        <ul class="days">
-            <li><strong>1</strong></li>
-            <li><strong>2</strong></li>
-            <li><strong>3</strong></li>
-            <li><strong>4</strong></li>
-            <li><strong>5</strong></li>
-            <li><strong>6</strong></li>
-            <li><strong>7</strong></li>
-            <li><span class="badge text-bg-danger p-2"><strong>8</strong></span></li>
-            <li><span class="badge text-bg-danger p-2"><strong>9</strong></li>
-            <li><span class="badge text-bg-danger p-2"><strong>10</strong></span></li>
-            <li><strong>11</strong></li>
-            <li><strong>12</strong></li>
-            <li><strong>13</strong></li>
-            <li><strong>14</strong></li>
-            <li><strong>15</strong></li>
-            <li><strong>16</strong></li>
-            <li><strong>17</strong></li>
-            <li><strong>18</strong></li>
-            <li><span class="badge text-bg-warning p-2"><strong>19</strong></span></li>
-            <li><span class="badge text-bg-warning p-2"><strong>20</strong></span></li>
-            <li><strong>21</strong></li>
-            <li><strong>22</strong></li>
-            <li><strong>23</strong></li>
-            <li><strong>24</strong></li>
-            <li><strong>25</strong></li>
-            <li><strong>26</strong></li>
-            <li><strong>27</strong></li>
-            <li><strong>28</strong></li>
-            <li><strong>29</strong></li>
-            <li><strong>30</strong></li>
-            <li><strong>31</strong></li>
-        </ul>
+            <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span></p>
 
-        <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span> Onbevestigt: <span class="badge text-bg-warning p-2 mr-3">&nbsp;</span></p>
+            <div class="row">
+                <div class="col">
+                    <!-- Form -->
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">Naam</label>
+                        <input type="text" class="form-control" id="first_name" aria-describedby="" placeholder="Voornaam">
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Achternaam</label>
+                        <input type="text" class="form-control" id="last_name">
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="birthdate" class="form-label">Geboortedatum</label>
+                        <input type="date" class="form-control" id="birthdate" aria-describedby="">
+                    </div>
+
+                    <div class="mb-3">
+                    <label for="birthdate" class="form-label">Nationaliteit</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled>Selecteer</option>
+                            <option value="1">Nederlands</option>
+                            <option value="2">Duits</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Adres</label>
+                        <input type="text" class="form-control" id="address" aria-describedby="">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="city" class="form-label">Woonplaats</label>
+                        <input type="text" class="form-control" id="city" aria-describedby="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="zipcode" class="form-label">Postcode</label>
+                        <input type="text" class="form-control" id="zipcode" aria-describedby="">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="id_number" class="form-label">ID of paspoort-nummer</label>
+                        <input type="text" class="form-control" id="id_number" aria-describedby="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email adres</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Telefoonnummer</label>
+                        <input type="text" class="form-control" id="phone" aria-describedby="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <h4>Opties</h4>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="animals">
+                        <label class="form-check-label" for="animals">
+                            Huisdieren die mee komen (5€ extra)
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="child_bed">
+                        <label class="form-check-label" for="child_bed">
+                        Kinderbedje(ledikantje) (10€ extra)
+                        </label>
+                    </div>
+                </diV>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Opmerkingen</label>
+                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <p>Wintermaanden extra verwarmingskosten: 1 Oktober t/m 31 april 10 per nacht per appartement.
+                <br>
+                Toeristenbelasting: € 2.10 p.p. per nacht 14 jaar en ouder
+                <br>
+                Prijzen zijn op basis van 2 personen per nacht.
+                Extra personen zijn 10 p.p. per nacht voor 13>
+                Kinderen 13< zijn gratis.
+            </p>
+            <button type="submit" class="btn btn-primary">Verzend</button>
+        </form>
     </div>
 
     <style>
