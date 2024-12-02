@@ -466,8 +466,38 @@ function reservation_create_customers_page() {
 
     <hr>
 
-    <div class="container">
+    <div class="container" style="max-width: 300px;">
+        <div class="mb-3">
+            <label for="first_name" class="form-label">Voornaam</label>
+            <input type="text" class="form-control" id="first_name" aria-describedby="">
+        </div>
 
+        <div class="mb-3">
+            <label for="first_name" class="form-label">Achtername</label>
+            <input type="text" class="form-control" id="last_name" aria-describedby="">
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Adres</label>
+            <input type="text" class="form-control" id="address" aria-describedby="">
+        </div>
+
+        <div class="mb-3">
+            <label for="zipcode" class="form-label">Postcode</label>
+            <input type="text" class="form-control" id="zipcode" aria-describedby="">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" aria-describedby="">
+        </div>
+
+        <div class="mb-3">
+            <label for="id_number" class="form-label">ID/paspoort nummer</label>
+            <input type="text" class="form-control" id="id_number" aria-describedby="">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Opslaan</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
