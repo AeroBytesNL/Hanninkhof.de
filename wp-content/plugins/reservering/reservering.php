@@ -783,7 +783,10 @@ function booking_form() {
 
             <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span></p>
 
+            <hr>
+
             <div class="row">
+                <h1>Boeker</h1>
                 <div class="col">
                     <!-- Form -->
                     <div class="mb-3">
@@ -884,23 +887,28 @@ function booking_form() {
                 </div>
             </div>
 
-            <p>Wintermaanden extra verwarmingskosten: 1 Oktober t/m 31 april 10 per nacht per appartement.
+            <p>
+                Wintermaanden extra verwarmingskosten: 1 Oktober t/m 31 april 10 per nacht per appartement.
                 <br>
-                Toeristenbelasting: € 2.10 p.p. per nacht 14 jaar en ouder
+                Toeristenbelasting: € 2.10 p.p. per nacht 14 jaar en ouder.
                 <br>
                 Prijzen zijn op basis van 2 personen per nacht.
-                Extra personen zijn 10 p.p. per nacht voor 13>
+                Extra personen zijn 10 p.p. per nacht voor 13>.
                 Kinderen 13< zijn gratis.
             </p>
 
             <hr>
 
+            <h1>Extra personen:</h1>
             <div class="mb-3">
                 <label for="birthdate" class="form-label">Aantal personen:</label>
                 <select class="form-select" aria-label="Default select example">
                     <option selected disabled>Selecteer</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
+                    <option value="3">2</option>
+                    <option value="4">2</option>
+
                 </select>
             </div>
 
@@ -920,6 +928,7 @@ function booking_form() {
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
@@ -927,8 +936,23 @@ function booking_form() {
                             <input type="text" class="form-control" id="address" aria-describedby="">
                         </div>
                     </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="natonality" class="form-label">Nationaliteit</label>
+                            <input type="text" class="form-control" id="natonality" aria-describedby="">
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <hr>
+            <!-- Total pricing -->
+            <h1>Prijs</h1>
+            <div class="">
+                <p>Totaal prijs: 123€.</p>
+            </div>
+
+
             <button type="submit" class="btn btn-primary">Verzend</button>
         </form>
     </div>
