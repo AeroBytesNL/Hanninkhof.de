@@ -892,6 +892,43 @@ function booking_form() {
                 Extra personen zijn 10 p.p. per nacht voor 13>
                 Kinderen 13< zijn gratis.
             </p>
+
+            <hr>
+
+            <div class="mb-3">
+                <label for="birthdate" class="form-label">Aantal personen:</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected disabled>Selecteer</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <p>Persoon 2:</p>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="name_first_" class="form-label">Voornaam achternaam</label>
+                            <input type="text" class="form-control" id="address" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="city" class="form-label">Adres</label>
+                            <input type="text" class="form-control" id="city" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Woonplaats</label>
+                            <input type="text" class="form-control" id="address" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">Verzend</button>
         </form>
     </div>
