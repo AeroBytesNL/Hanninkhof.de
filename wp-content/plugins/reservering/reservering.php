@@ -832,9 +832,9 @@ function booking_form() {
 
             <div class="mb-3">
                 <h1>Huis/appartement</h1>
-                <select class="form-select" aria-label="Default select example" id="home" name="home">
+                <select class="form-select" aria-label="Default select example" id="home" name="home" onchange="changePrice(event)">
                     <option selected disabled>Selecteer</option>
-                    <option value="1">Feldberg</option>
+                    <option value="75">Feldberg</option>
                 </select>
             </div>
 
@@ -1161,19 +1161,6 @@ function booking_form() {
     </style>
 
     <script>
-        // // Calendar days selector
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     // Get all days in calendar
-        //     const days = document.querySelectorAll(".days li");
-
-        //     days.forEach(day => {
-        //         day.addEventListener("click", function () {
-        //             this.classList.toggle("selected");
-        //             console.log('selected')
-        //         });
-        //     });
-        // });
-
         // Extra persons selector
         // TODO: fix horrible code
         function changeExtraPersons(event) {
@@ -1219,6 +1206,12 @@ function booking_form() {
                 selectedDaysInput.value = selectedDays.join(',');
             });
         });
+
+        function changePrice(event) {
+            var homePrice = document.getElementById('home').value;
+            var selectedDaysInput = document.getElementById('selected_days').value;
+            console.log(selectedDaysInput.length)
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
