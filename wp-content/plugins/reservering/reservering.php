@@ -768,14 +768,14 @@ function booking_form() {
 	<link rel="stylesheet" href="css/style.css">
 
     <div class="container mt-3" style="max-width: 700px;">
-        <form>
+        <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
             <div class="month">
                 <ul>
                     <li class="prev">&#10094;</li>
                     <li class="next">&#10095;</li>
-                    <li>
-                    November<br>
-                    <span style="font-size:18px">2025</span>
+                    <li id="month-year" name="month-year">
+                        November<br>
+                        <span style="font-size:18px" id="year">2025</span>
                     </li>
                 </ul>
             </div>
@@ -790,43 +790,53 @@ function booking_form() {
                 <li>Zondag</li>
             </ul>
 
-            <ul class="days">
-                <li><strong>1</strong></li>
-                <li><strong>2</strong></li>
-                <li><strong>3</strong></li>
-                <li><strong>4</strong></li>
-                <li><strong>5</strong></li>
-                <li><strong>6</strong></li>
-                <li><strong>7</strong></li>
-                <li><span class="badge text-bg-danger p-2"><strong>8</strong></span></li>
-                <li><span class="badge text-bg-danger p-2"><strong>9</strong></li>
-                <li><span class="badge text-bg-danger p-2"><strong>10</strong></span></li>
-                <li><strong>11</strong></li>
-                <li><strong>12</strong></li>
-                <li><strong>13</strong></li>
-                <li><strong>14</strong></li>
-                <li><strong>15</strong></li>
-                <li><strong>16</strong></li>
-                <li><strong>17</strong></li>
-                <li><strong>18</strong></li>
-                <li><strong>19</strong></span></li>
-                <li><strong>20</strong></span></li>
-                <li><strong>21</strong></li>
-                <li><strong>22</strong></li>
-                <li><strong>23</strong></li>
-                <li><strong>24</strong></li>
-                <li><strong>25</strong></li>
-                <li><strong>26</strong></li>
-                <li><strong>27</strong></li>
-                <li><strong>28</strong></li>
-                <li><strong>29</strong></li>
-                <li><strong>30</strong></li>
-                <li><strong>31</strong></li>
+            <ul class="days" id="days_to_rent" name="days_to_rent">
+                <li data-day="1"><strong>1</strong></li>
+                <li data-day="2"><strong>2</strong></li>
+                <li data-day="3"><strong>3</strong></li>
+                <li data-day="4"><strong>4</strong></li>
+                <li data-day="5"><strong>5</strong></li>
+                <li data-day="6"><strong>6</strong></li>
+                <li data-day="7"><strong>7</strong></li>
+                <li data-day="8"><strong>8</strong></li>
+                <li data-day="9"><strong>9</strong></li>
+                <li data-day="10"><strong>10</strong></li> <!-- class="badge text-bg-danger p-2" -->
+                <li data-day="11"><strong>11</strong></li>
+                <li data-day="12"><strong>12</strong></li>
+                <li data-day="13"><strong>13</strong></li>
+                <li data-day="14"><strong>14</strong></li>
+                <li data-day="15"><strong>15</strong></li>
+                <li data-day="16"><strong>16</strong></li>
+                <li data-day="17"><strong>17</strong></li>
+                <li data-day="18"><strong>18</strong></li>
+                <li data-day="19"><strong>19</strong></li>
+                <li data-day="20"><strong>20</strong></li>
+                <li data-day="21"><strong>21</strong></li>
+                <li data-day="22"><strong>22</strong></li>
+                <li data-day="23"><strong>23</strong></li>
+                <li data-day="24"><strong>24</strong></li>
+                <li data-day="25"><strong>25</strong></li>
+                <li data-day="26"><strong>26</strong></li>
+                <li data-day="27"><strong>27</strong></li>
+                <li data-day="28"><strong>28</strong></li>
+                <li data-day="29"><strong>29</strong></li>
+                <li data-day="30"><strong>30</strong></li>
+                <li data-day="31"><strong>31</strong></li>
             </ul>
+
+            <input type="hidden" name="days_to_rent" id="selected_days" value="">
 
             <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span></p>
 
             <hr>
+
+            <div class="mb-3">
+                <h1>Huis/appartement</h1>
+                <select class="form-select" aria-label="Default select example" id="home" name="home">
+                    <option selected disabled>Selecteer</option>
+                    <option value="1">Feldberg</option>
+                </select>
+            </div>
 
             <div class="row">
                 <h1>Boeker</h1>
@@ -834,26 +844,26 @@ function booking_form() {
                     <!-- Form -->
                     <div class="mb-3">
                         <label for="first_name" class="form-label">Naam</label>
-                        <input type="text" class="form-control" id="first_name" aria-describedby="" placeholder="Voornaam">
+                        <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="" placeholder="Voornaam">
                     </div>
                     <div class="mb-3">
                         <label for="last_name" class="form-label">Achternaam</label>
-                        <input type="text" class="form-control" id="last_name">
+                        <input type="text" class="form-control" id="last_name" name="last_name">
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="mb-3">
                         <label for="birthdate" class="form-label">Geboortedatum</label>
-                        <input type="date" class="form-control" id="birthdate" aria-describedby="">
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" aria-describedby="">
                     </div>
 
                     <div class="mb-3">
-                    <label for="birthdate" class="form-label">Nationaliteit</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <label for="birthdate" class="form-label">Nationaliteit</label>
+                        <select class="form-select" aria-label="Default select example" id="nationality" name="nationality">
                             <option selected disabled>Selecteer</option>
-                            <option value="1">Nederlands</option>
-                            <option value="2">Duits</option>
+                            <option value="NL">Nederlands</option>
+                            <option value="GE">Duits</option>
                         </select>
                     </div>
                 </div>
@@ -863,13 +873,13 @@ function booking_form() {
                 <div class="col">
                     <div class="mb-3">
                         <label for="address" class="form-label">Adres</label>
-                        <input type="text" class="form-control" id="address" aria-describedby="">
+                        <input type="text" class="form-control" id="address" name="address" aria-describedby="">
                     </div>
                 </div>
                 <div class="col">
                     <div class="mb-3">
                         <label for="city" class="form-label">Woonplaats</label>
-                        <input type="text" class="form-control" id="city" aria-describedby="">
+                        <input type="text" class="form-control" id="city" name="city" aria-describedby="">
                     </div>
                 </div>
             </div>
@@ -878,13 +888,13 @@ function booking_form() {
                 <div class="col">
                     <div class="mb-3">
                         <label for="zipcode" class="form-label">Postcode</label>
-                        <input type="text" class="form-control" id="zipcode" aria-describedby="">
+                        <input type="text" class="form-control" id="zipcode" name="zipcode" aria-describedby="">
                     </div>
                 </div>
                 <div class="col">
                     <div class="mb-3">
                         <label for="id_number" class="form-label">ID of paspoort-nummer</label>
-                        <input type="text" class="form-control" id="id_number" aria-describedby="">
+                        <input type="text" class="form-control" id="id_number" name="id_number" aria-describedby="">
                     </div>
                 </div>
             </div>
@@ -893,13 +903,13 @@ function booking_form() {
                 <div class="col">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email adres</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="">
+                        <input type="email" class="form-control" id="email" name="email" aria-describedby="">
                     </div>
                 </div>
                 <div class="col">
                     <div class="mb-3">
                         <label for="phone" class="form-label">Telefoonnummer</label>
-                        <input type="text" class="form-control" id="phone" aria-describedby="">
+                        <input type="text" class="form-control" id="phone" name="phone" aria-describedby="">
                     </div>
                 </div>
             </div>
@@ -908,14 +918,14 @@ function booking_form() {
                 <div class="col">
                     <h4>Opties</h4>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="animals">
+                        <input class="form-check-input" type="checkbox" value="1" id="animals" name="animals">
                         <label class="form-check-label" for="animals">
                             Huisdieren die mee komen (5€ extra)
                         </label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="child_bed">
+                        <input class="form-check-input" type="checkbox" value="1" id="child_bed" name="child_bed">
                         <label class="form-check-label" for="child_bed">
                         Kinderbedje(ledikantje) (10€ extra)
                         </label>
@@ -925,7 +935,7 @@ function booking_form() {
                 <div class="col">
                     <div class="mb-3">
                         <label for="phone" class="form-label">Opmerkingen</label>
-                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                        <textarea class="form-control" aria-label="With textarea" id="comments" name="comments"></textarea>
                     </div>
                 </div>
             </div>
@@ -942,32 +952,32 @@ function booking_form() {
 
             <hr>
 
-            <h1>Extra personen:</h1>
+            <h1>Aantal personen</h1>
             <div class="mb-3">
                 <label for="birthdate" class="form-label">Aantal personen:</label>
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" aria-label="Default select example" id="amount_persons" name="amount_persons" onchange="changeExtraPersons(event)">
                     <option selected disabled>Selecteer</option>
                     <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">2</option>
-                    <option value="4">2</option>
+                    <option selected value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
 
                 </select>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" style="display: display" id="person_2">
                 <p>Persoon 2:</p>
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
-                            <label for="name_first_" class="form-label">Voornaam achternaam</label>
-                            <input type="text" class="form-control" id="address" aria-describedby="">
+                            <label for="name_second" class="form-label">Voornaam achternaam</label>
+                            <input type="text" class="form-control" id="name_second" name="name_second" aria-describedby="">
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="city" class="form-label">Adres</label>
-                            <input type="text" class="form-control" id="city" aria-describedby="">
+                            <label for="address_second" class="form-label">Adres</label>
+                            <input type="text" class="form-control" id="address_second" name="address_second" aria-describedby="">
                         </div>
                     </div>
                 </div>
@@ -975,14 +985,80 @@ function booking_form() {
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
-                            <label for="address" class="form-label">Woonplaats</label>
-                            <input type="text" class="form-control" id="address" aria-describedby="">
+                            <label for="city_second" class="form-label">Woonplaats</label>
+                            <input type="text" class="form-control" id="city_second" name="city_second" aria-describedby="">
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="natonality" class="form-label">Nationaliteit</label>
-                            <input type="text" class="form-control" id="natonality" aria-describedby="">
+                            <label for="natonality_second" class="form-label">Nationaliteit</label>
+                            <input type="text" class="form-control" id="natonality_second" name="natonality_second" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3" style="display: none" id="person_3">
+                <p>Persoon 3:</p>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="name_thirth" class="form-label">Voornaam achternaam</label>
+                            <input type="text" class="form-control" id="name_thirth" name="name_thirth" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="address_thirth" class="form-label">Adres</label>
+                            <input type="text" class="form-control" id="address_thirth" name="address_thirth" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="city_thirth" class="form-label">Woonplaats</label>
+                            <input type="text" class="form-control" id="city_thirth" name="city_thirth" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="natonality_thirth" class="form-label">Nationaliteit</label>
+                            <input type="text" class="form-control" id="natonality_thirth" name="natonality_thirth" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3" style="display: none" id="person_4">
+                <p>Persoon 4:</p>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="name_fourth" class="form-label">Voornaam achternaam</label>
+                            <input type="text" class="form-control" id="name_fourth" name="name_fourth" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="address_fourth" class="form-label">Adres</label>
+                            <input type="text" class="form-control" id="address_fourth" name="address_fourth" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="city_fourth" class="form-label">Woonplaats</label>
+                            <input type="text" class="form-control" id="city_fourth" name="city_fourth" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="natonality_fourth" class="form-label">Nationaliteit</label>
+                            <input type="text" class="form-control" id="natonality_fourth" name="natonality_fourth" aria-describedby="">
                         </div>
                     </div>
                 </div>
@@ -992,11 +1068,10 @@ function booking_form() {
             <!-- Total pricing -->
             <h1>Prijs</h1>
             <div class="">
-                <p>Totaal prijs: 123€.</p>
+                <p>Totaal prijs: <div id="total_price"></div></p>
             </div>
 
-
-            <button type="submit" class="btn btn-primary">Verzend</button>
+            <button type="submit" name="booking_form_submitted" class="btn btn-primary">Verzend</button>
         </form>
     </div>
 
@@ -1065,7 +1140,12 @@ function booking_form() {
             color: white !important
         }
 
-        /* Add media queries for smaller screens */
+        .selected {
+            background-color: green;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
         @media screen and (max-width:720px) {
             .weekdays li, .days li {width: 13.1%;}
         }
@@ -1080,12 +1160,89 @@ function booking_form() {
         }
     </style>
 
-	<script src="js/jquery.min.js"></script>
-  	<script src="js/popper.js"></script>
-  	<script src="js/bootstrap.min.js"></script>
-  	<script src="js/main.js"></script>
+    <script>
+        // // Calendar days selector
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     // Get all days in calendar
+        //     const days = document.querySelectorAll(".days li");
+
+        //     days.forEach(day => {
+        //         day.addEventListener("click", function () {
+        //             this.classList.toggle("selected");
+        //             console.log('selected')
+        //         });
+        //     });
+        // });
+
+        // Extra persons selector
+        // TODO: fix horrible code
+        function changeExtraPersons(event) {
+            console.log(event.target.value)
+            if (event.target.value == 1) {
+                document.getElementById("person_2").style.display = "none";
+                document.getElementById("person_3").style.display = "none";
+                document.getElementById("person_4").style.display = "none";
+            }
+
+            if (event.target.value == 2) {
+                document.getElementById("person_2").style.display = "block";
+                document.getElementById("person_3").style.display = "none";
+                document.getElementById("person_4").style.display = "none";
+
+            }
+
+            if (event.target.value == 3) {
+                document.getElementById("person_2").style.display = "block";
+                document.getElementById("person_3").style.display = "block";
+                document.getElementById("person_4").style.display = "none";
+            }
+
+            if (event.target.value == 4) {
+                document.getElementById("person_2").style.display = "block";
+                document.getElementById("person_3").style.display = "block";
+                document.getElementById("person_4").style.display = "block";
+            }
+        }
+
+        const days = document.querySelectorAll('#days_to_rent li');
+        const selectedDaysInput = document.getElementById('selected_days');
+
+        days.forEach(day => {
+            day.addEventListener('click', function() {
+                this.classList.toggle('selected');
+
+                const selectedDays = [];
+                document.querySelectorAll('#days_to_rent li.selected').forEach(selectedDay => {
+                    selectedDays.push(selectedDay.getAttribute('data-day'));
+                });
+
+                selectedDaysInput.value = selectedDays.join(',');
+            });
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <?php
 }
 
-add_shortcode('booking_form', 'booking_form');
+function booking_form_handle() {
+    if (!isset($_POST['booking_form_submitted'])) {
+        return;
+    }
+
+    echo '<div>';
+    echo $_POST['first_name'];
+    echo $_POST['days_to_rent'];
+    echo "<p style=background-color: green; !important; text-align: center; margin-top: -7px;'><strong>Uw aanmelding is verstuurd! Er zal contact met u opgenomen worden.</strong></p>";
+    echo '</div>';
+}
+
+function register_booking_form_short_code() {
+    ob_start();
+    booking_form();
+    booking_form_handle();
+
+    return ob_get_clean();
+}
+
+add_shortcode('booking_form', 'register_booking_form_short_code');
