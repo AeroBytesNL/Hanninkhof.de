@@ -1006,10 +1006,10 @@ function booking_form() {
             <p>
                 Wintermaanden extra verwarmingskosten: 1 Oktober t/m 31 april 10 per nacht per appartement.
                 <br>
-                Toeristenbelasting: € 2.10 p.p. per nacht 14 jaar en ouder.
+                Toeristenbelasting: €2.10 p.p. per nacht 14 jaar en ouder.
                 <br>
                 Prijzen zijn op basis van 2 personen per nacht.
-                Extra personen zijn 10 p.p. per nacht voor 13>.
+                Extra personen zijn €10 p.p. per nacht voor 13>.
                 Kinderen 13< zijn gratis.
             </p>
 
@@ -1190,7 +1190,7 @@ function booking_form() {
             <!-- Total pricing -->
             <h1>Prijs</h1>
             <div class="">
-                <p>Totaal prijs: <div id="total_price"></div></p>
+                <h2 class="d-inline">€<div class="d-inline" id="total_price"></div></h2>
             </div>
 
             <button type="submit" name="booking_form_submitted" class="btn btn-primary">Verzend</button>
