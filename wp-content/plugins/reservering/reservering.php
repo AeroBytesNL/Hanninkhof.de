@@ -981,14 +981,14 @@ function booking_form() {
                 <div class="col">
                     <h4>Opties</h4>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1" id="animals" name="animals">
+                        <input class="form-check-input" type="checkbox" value="5" id="animals" name="animals" onchange="changePrice()">
                         <label class="form-check-label" for="animals">
                             Huisdieren die mee komen (5€ extra)
                         </label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1" id="child_bed" name="child_bed">
+                        <input class="form-check-input" type="checkbox" value="10" id="child_bed" name="child_bed" onchange="changePrice()">
                         <label class="form-check-label" for="child_bed">
                         Kinderbedje(ledikantje) (10€ extra)
                         </label>
@@ -1071,6 +1071,15 @@ function booking_form() {
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="birthdate_second" class="form-label">Geboortedatum</label>
+                            <input type="date" class="form-control" id="birthdate_second" name="birthdate_second" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="mb-3" style="display: none" id="person_3">
@@ -1117,6 +1126,15 @@ function booking_form() {
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="birthdate_thirth" class="form-label">Geboortedatum</label>
+                            <input type="date" class="form-control" id="birthdate_thirth" name="birthdate_thirth" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="mb-3" style="display: none" id="person_4">
@@ -1160,6 +1178,15 @@ function booking_form() {
                         <div class="mb-3" style="display: none;" id="id_number_fourth">
                             <label for="id_number_fourth" class="form-label">ID/paspoort nummer</label>
                             <input type="text" class="form-control" id="city_fourth" name="id_number_fourth" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="birthdate_fourth" class="form-label">Geboortedatum</label>
+                            <input type="date" class="form-control" id="birthdate_fourth" name="birthdate_fourth" aria-describedby="">
                         </div>
                     </div>
                 </div>
@@ -1313,9 +1340,36 @@ function booking_form() {
 
         function changePrice() {
             var homePrice = document.getElementById('home').value;
-            var selectedDaysInput = document.getElementById('selected_days').value;
-            var totalHomePrice = homePrice * selectedDaysInput.length;
-            console.log(totalHomePrice);
+            var selectedDaysInput = (document.getElementById('selected_days').value).split(',');
+            if (document.getElementById('animals').checked) {
+                var animals = document.getElementById('animals').value;
+            } else {
+                var animals = 0;
+            }
+            if (document.getElementById('animals').checked) {
+                var animals = document.getElementById('animals').value;
+            } else {
+                var animals = 0;
+            }
+            if (document.getElementById('child_bed').checked) {
+                var childBed = document.getElementById('child_bed').value;
+            } else {
+                var childBed = 0;
+            }
+
+            if (document.getElementById('amount_persons').value == 3) {
+                var extraPeoplePrice = 10;
+            } else if (document.getElementById('amount_persons').value == 4) {
+                var extraPeoplePrice = 20;
+            } else {
+                var extraPeoplePrice = 0;
+            }
+
+            var totalHomePrice =
+                Number(animals) +
+                Number(childBed) +
+                (Number(homePrice) * Number(selectedDaysInput.length)) +
+                Number(extraPeoplePrice);
 
             document.getElementById('total_price').innerHTML = totalHomePrice;
         }
@@ -1348,6 +1402,7 @@ function booking_form() {
                 document.getElementById('id_number_fourth').style.display = 'none';
             }
         }
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
