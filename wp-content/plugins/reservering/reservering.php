@@ -1264,7 +1264,7 @@ function booking_form() {
 
         .selected {
             background-color: green;
-            color: #ffffff;
+            color: white !important;
             border-radius: 5px;
         }
 
