@@ -1024,7 +1024,6 @@ function booking_form() {
                     <option selected value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
-
                 </select>
             </div>
 
@@ -1033,16 +1032,17 @@ function booking_form() {
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
-                            <label for="name_second" class="form-label">Voornaam achternaam</label>
-                            <input type="text" class="form-control" id="name_second" name="name_second" aria-describedby="">
+                            <label for="name_second" class="form-label">Voornaam</label>
+                            <input type="text" class="form-control" id="name_first_second" name="name_second" aria-describedby="">
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="address_second" class="form-label">Adres</label>
-                            <input type="text" class="form-control" id="address_second" name="address_second" aria-describedby="">
+                            <label for="name_second" class="form-label">Achternaam</label>
+                            <input type="text" class="form-control" id="name_last_second" name="name_second" aria-describedby="">
                         </div>
                     </div>
+
                 </div>
 
                 <div class="row">
@@ -1063,20 +1063,18 @@ function booking_form() {
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="mb-3" style="display: none;" id="id_number_second">
-                            <label for="id_number_second" class="form-label">ID/paspoort nummer</label>
-                            <input type="text" class="form-control" id="city_fourth" name="id_number_second" aria-describedby="">
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
                             <label for="birthdate_second" class="form-label">Geboortedatum</label>
                             <input type="date" class="form-control" id="birthdate_second" name="birthdate_second" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3" style="display: none;" id="id_number_second">
+                            <label for="id_number_second" class="form-label">ID/paspoort nummer</label>
+                            <input type="text" class="form-control" id="city_fourth" name="id_number_second" aria-describedby="">
                         </div>
                     </div>
                 </div>
@@ -1087,16 +1085,17 @@ function booking_form() {
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
-                            <label for="name_thirth" class="form-label">Voornaam achternaam</label>
-                            <input type="text" class="form-control" id="name_thirth" name="name_thirth" aria-describedby="">
+                            <label for="first_name_thirth" class="form-label">Voornaam</label>
+                            <input type="text" class="form-control" id="first_name_thirth" name="first_name_thirth" aria-describedby="">
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="address_thirth" class="form-label">Adres</label>
-                            <input type="text" class="form-control" id="address_thirth" name="address_thirth" aria-describedby="">
+                            <label for="last_name_thirth" class="form-label">Achternaam</label>
+                            <input type="text" class="form-control" id="last_name_thirth" name="last_name_thirth" aria-describedby="">
                         </div>
                     </div>
+
                 </div>
 
                 <div class="row">
@@ -1120,18 +1119,15 @@ function booking_form() {
 
                 <div class="row">
                     <div class="col">
-                        <div class="mb-3" style="display: none;" id="id_number_thirth">
-                            <label for="id_number_thirth" class="form-label">ID/paspoort nummer</label>
-                            <input type="text" class="form-control" id="city_fourth" name="id_number_thirth" aria-describedby="">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
                         <div class="mb-3">
                             <label for="birthdate_thirth" class="form-label">Geboortedatum</label>
                             <input type="date" class="form-control" id="birthdate_thirth" name="birthdate_thirth" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3" style="display: none;" id="id_number_thirth">
+                            <label for="id_number_thirth" class="form-label">ID/paspoort nummer</label>
+                            <input type="text" class="form-control" id="id_number_thirth" name="id_number_thirth" aria-describedby="">
                         </div>
                     </div>
                 </div>
@@ -1142,16 +1138,17 @@ function booking_form() {
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
-                            <label for="name_fourth" class="form-label">Voornaam achternaam</label>
-                            <input type="text" class="form-control" id="name_fourth" name="name_fourth" aria-describedby="">
+                            <label for="first_name_fourth" class="form-label">Voornaam</label>
+                            <input type="text" class="form-control" id="first_name_fourth" name="first_name_fourth" aria-describedby="">
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="address_fourth" class="form-label">Adres</label>
-                            <input type="text" class="form-control" id="address_fourth" name="address_fourth" aria-describedby="">
+                            <label for="last_name_fourth" class="form-label">Achternaam</label>
+                            <input type="text" class="form-control" id="last_name_fourth" name="last_name_fourth" aria-describedby="">
                         </div>
                     </div>
+
                 </div>
 
                 <div class="row">
@@ -1163,7 +1160,7 @@ function booking_form() {
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="nationality_person_4" class="form-label">Nationaliteit</label>
+                            <label for="birthdate" class="form-label">Nationaliteit</label>
                             <select class="form-select" aria-label="Default select example" id="nationality_person_4" name="nationality_person_4" onchange="showHideIdFourth()">
                                 <option selected disabled>Selecteer</option>
                                 <option value="NL">Nederlands</option>
@@ -1175,18 +1172,15 @@ function booking_form() {
 
                 <div class="row">
                     <div class="col">
-                        <div class="mb-3" style="display: none;" id="id_number_fourth">
-                            <label for="id_number_fourth" class="form-label">ID/paspoort nummer</label>
-                            <input type="text" class="form-control" id="city_fourth" name="id_number_fourth" aria-describedby="">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
                         <div class="mb-3">
                             <label for="birthdate_fourth" class="form-label">Geboortedatum</label>
                             <input type="date" class="form-control" id="birthdate_fourth" name="birthdate_fourth" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3" style="display: none;" id="id_number_fourth">
+                            <label for="id_number_fourth" class="form-label">ID/paspoort nummer</label>
+                            <input type="text" class="form-control" id="id_number_fourth" name="id_number_fourth" aria-describedby="">
                         </div>
                     </div>
                 </div>
