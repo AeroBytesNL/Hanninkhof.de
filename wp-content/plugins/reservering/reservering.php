@@ -897,14 +897,13 @@ function booking_form() {
                         <option value="4">Mei</option>
                         <option value="5">Juni</option>
                         <option value="6">Juli</option>
-                        <option value="7">Augustus</option>
+                        <option value="7">Augustus</option>.3+
                         <option value="8">September</option>
                         <option value="9">Oktober</option>
                         <option value="10">November</option>
                         <option value="11">December</option>
                     </select>
                     <select id="year-select" name="year">
-                        <!-- Dynamisch toevoegen van jaren via JS -->
                     </select>
                     <!-- 
                     <li id="month-year" name="month-year">
@@ -926,37 +925,6 @@ function booking_form() {
             </ul>
 
             <ul class="days" id="days_to_rent" name="days_to_rent">
-                <li data-day="1"><strong>1</strong></li>
-                <li data-day="2"><strong>2</strong></li>
-                <li data-day="3"><strong>3</strong></li>
-                <li data-day="4"><strong>4</strong></li>
-                <li data-day="5"><strong>5</strong></li>
-                <li data-day="6"><strong>6</strong></li>
-                <li data-day="7"><strong>7</strong></li>
-                <li data-day="8"><strong>8</strong></li>
-                <li data-day="9"><strong>9</strong></li>
-                <li data-day="10"><strong>10</strong></li> <!-- class="badge text-bg-danger p-2" -->
-                <li data-day="11"><strong>11</strong></li>
-                <li data-day="12"><strong>12</strong></li>
-                <li data-day="13"><strong>13</strong></li>
-                <li data-day="14"><strong>14</strong></li>
-                <li data-day="15"><strong>15</strong></li>
-                <li data-day="16"><strong>16</strong></li>
-                <li data-day="17"><strong>17</strong></li>
-                <li data-day="18"><strong>18</strong></li>
-                <li data-day="19"><strong>19</strong></li>
-                <li data-day="20"><strong>20</strong></li>
-                <li data-day="21"><strong>21</strong></li>
-                <li data-day="22"><strong>22</strong></li>
-                <li data-day="23"><strong>23</strong></li>
-                <li data-day="24"><strong>24</strong></li>
-                <li data-day="25"><strong>25</strong></li>
-                <li data-day="26"><strong>26</strong></li>
-                <li data-day="27"><strong>27</strong></li>
-                <li data-day="28"><strong>28</strong></li>
-                <li data-day="29"><strong>29</strong></li>
-                <li data-day="30"><strong>30</strong></li>
-                <li data-day="31"><strong>31</strong></li>
             </ul>
 
             <input type="hidden" name="days_to_rent" id="selected_days" value="">
@@ -1357,6 +1325,12 @@ function booking_form() {
             border-radius: 5px;
         }
 
+        .booked {
+            background-color: red;
+            color: white !important;
+            border-radius: 5px;
+        }
+
         @media screen and (max-width:720px) {
             .weekdays li, .days li {width: 13.1%;}
         }
@@ -1372,6 +1346,47 @@ function booking_form() {
     </style>
 
     <script>
+        const monthSelect = document.getElementById("month-select");
+        const yearSelect = document.getElementById("year-select");
+        const daysToRent = document.getElementById("days_to_rent");
+
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth();
+
+        for (let i = currentYear - 10; i <= currentYear + 10; i++) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+
+        monthSelect.value = currentMonth;
+        yearSelect.value = currentYear;
+
+        function getDaysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+        function updateCalendar() {
+            const selectedMonth = parseInt(monthSelect.value);
+            const selectedYear = parseInt(yearSelect.value);
+            const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
+
+            daysToRent.innerHTML = "";
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const li = document.createElement("li");
+                li.setAttribute("data-day", day);
+                li.textContent = day;
+                daysToRent.appendChild(li);
+            }
+        }
+
+        monthSelect.addEventListener("change", updateCalendar);
+        yearSelect.addEventListener("change", updateCalendar);
+
+        updateCalendar();
+
         // Extra persons selector
         // TODO: fix horrible code
         function changeExtraPersons(event) {
@@ -1420,7 +1435,6 @@ function booking_form() {
 
         days.forEach(day => {
             day.addEventListener('click', function() {
-
                 this.classList.toggle('selected');
                 const selectedDays = [];
                 document.querySelectorAll('#days_to_rent li.selected').forEach(selectedDay => {
@@ -1436,54 +1450,12 @@ function booking_form() {
                 const startDate = new Date(selectedYear.value, selectedMonth.value, res.minNumber);
                 const endDate = new Date(selectedYear.value, selectedMonth.value, res.maxNumber);
 
-                console.log(startDate.toISOString(), endDate.toISOString());
                 document.getElementById('start_date').value = startDate.toISOString();
                 document.getElementById('end_date').value = endDate.toISOString();
 
                 changePrice();
             });
         });
-
-        const monthSelect = document.getElementById("month-select");
-        const yearSelect = document.getElementById("year-select");
-        const daysToRent = document.getElementById("days-to-rent");
-
-        const currentYear = new Date().getFullYear();
-        const currentMonth = new Date().getMonth();
-
-        for (let i = currentYear - 10; i <= currentYear + 10; i++) {
-            const option = document.createElement("option");
-            option.value = i;
-            option.textContent = i;
-            yearSelect.appendChild(option);
-        }
-
-        monthSelect.value = currentMonth;
-        yearSelect.value = currentYear;
-
-        function getDaysInMonth(month, year) {
-            return new Date(year, month + 1, 0).getDate();
-        }
-
-        function updateCalendar() {
-            const selectedMonth = parseInt(monthSelect.value);
-            const selectedYear = parseInt(yearSelect.value);
-            const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
-
-            daysToRent.innerHTML = "";
-
-            for (let day = 1; day <= daysInMonth; day++) {
-                const li = document.createElement("li");
-                li.setAttribute("data-day", day);
-                li.textContent = day;
-                daysToRent.appendChild(li);
-            }
-        }
-
-        monthSelect.addEventListener("change", updateCalendar);
-        yearSelect.addEventListener("change", updateCalendar);
-
-        updateCalendar();
 
         function changePrice() {
             const selectHome = document.getElementById('home')
