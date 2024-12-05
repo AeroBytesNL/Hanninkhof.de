@@ -858,12 +858,18 @@ function handle_booking_form_submit() {
             'id_number_fourth' => sanitize_text_field($_POST['id_number_fourth'] ?? NULL),
             'house_rented' => sanitize_text_field($_POST['home']),
             'discount_amount' => 0,
-            'total_price' => sanitize_text_field($_POST['total_price']),
+            'total_price' => sanitize_text_field($_POST['total_price_hidden']),
+            'is_paid' => 0,
+            'accepted' => 0,
+            'is_viewed' => 0,
         )
     );
 
     if (!$query) {
-        echo 'Er ging iets mis!';
+        echo '<div class="container">';
+        echo '<h6>Uw aanvraag is verstuurd!</h6>';
+        echo '</div>';
+
         return;
     }
 
@@ -1273,7 +1279,7 @@ function booking_form() {
             <h1>Prijs</h1>
             <div class="">
                 <h2 class="d-inline">€<div class="d-inline" id="total_price" name="total_price"></div></h2>
-                <input type="hidden" id="total_price" name="total_price"><div></div></input>
+                <input type="hidden" id="total_price_hidden" name="total_price_hidden" value=""></input>
             </div>
 
             <button type="submit" name="booking_form_submit" class="btn btn-primary">Verzend</button>
@@ -1515,6 +1521,7 @@ function booking_form() {
                 Number(extraPeoplePrice);
 
             document.getElementById('total_price').innerHTML = totalHomePrice;
+            document.getElementById('total_price_hidden').value = totalHomePrice;
         }
 
         function showHideIdFirst() {
