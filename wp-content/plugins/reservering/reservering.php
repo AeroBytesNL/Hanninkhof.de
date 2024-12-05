@@ -840,8 +840,6 @@ function booking_form() {
         <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
             <div class="month">
                 <ul>
-                    <li class="prev">&#10094;</li>
-                    <li class="next">&#10095;</li>
                     <select id="month-select" name="month">
                         <option value="0">Januari</option>
                         <option value="1">Februari</option>
@@ -1396,7 +1394,6 @@ function booking_form() {
             });
         });
 
-        // Initialiseer de maanden en jaren
         const monthSelect = document.getElementById("month-select");
         const yearSelect = document.getElementById("year-select");
         const daysToRent = document.getElementById("days-to-rent");
@@ -1404,7 +1401,6 @@ function booking_form() {
         const currentYear = new Date().getFullYear();
         const currentMonth = new Date().getMonth();
 
-        // Voeg de jaren toe aan de dropdown
         for (let i = currentYear - 10; i <= currentYear + 10; i++) {
             const option = document.createElement("option");
             option.value = i;
@@ -1412,25 +1408,20 @@ function booking_form() {
             yearSelect.appendChild(option);
         }
 
-        // Stel standaardwaarde in voor maand en jaar
         monthSelect.value = currentMonth;
         yearSelect.value = currentYear;
 
-        // Functie om het aantal dagen in een maand te berekenen
         function getDaysInMonth(month, year) {
             return new Date(year, month + 1, 0).getDate();
         }
 
-        // Functie om de dagen in de kalender bij te werken
         function updateCalendar() {
             const selectedMonth = parseInt(monthSelect.value);
             const selectedYear = parseInt(yearSelect.value);
             const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
 
-            // Wis bestaande dagen
             daysToRent.innerHTML = "";
 
-            // Voeg de dagen toe
             for (let day = 1; day <= daysInMonth; day++) {
                 const li = document.createElement("li");
                 li.setAttribute("data-day", day);
@@ -1439,7 +1430,6 @@ function booking_form() {
             }
         }
 
-        // Event listeners voor wijzigingen in maand en jaar
         monthSelect.addEventListener("change", updateCalendar);
         yearSelect.addEventListener("change", updateCalendar);
 
