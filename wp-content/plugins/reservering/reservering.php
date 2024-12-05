@@ -8,6 +8,10 @@ Author: AutiCodes
 Author URI: https://auticodes.nl
 */
 
+/**
+ * CREATE TABLE `<DB NAME HERE>`.`bookings` (`id` INT NOT NULL AUTO_INCREMENT , `start_date` DATE NOT NULL , `end_date` DATE NOT NULL , `first_name` VARCHAR(255) NOT NULL , `last_name` VARCHAR(255) NOT NULL , `birthdate` DATE NOT NULL , `nationality` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , `city` VARCHAR(255) NOT NULL , `zipcode` VARCHAR(255) NOT NULL , `id_number` VARCHAR(255) NULL DEFAULT NULL , `email` VARCHAR(255) NOT NULL , `phone` VARCHAR(255) NOT NULL , `animals` INT(2) NULL DEFAULT NULL , `child_bed` INT(2) NULL DEFAULT NULL , `comments` TEXT NULL DEFAULT NULL , `amount_persons` INT(10) NOT NULL , `name_first_second` VARCHAR(255) NULL DEFAULT NULL , `name_last_second` VARCHAR(255) NULL DEFAULT NULL , `city_second` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_2` VARCHAR(255) NULL DEFAULT NULL , `birthdate_second` DATE NULL DEFAULT NULL , `id_number_second` VARCHAR(255) NULL DEFAULT NULL , `first_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `last_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `city_thirth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_3` VARCHAR(255) NULL DEFAULT NULL , `birthdate_thirth` VARCHAR(255) NULL DEFAULT NULL , `id_number_thirth` VARCHAR(255) NULL DEFAULT NULL , `first_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `last_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `city_fourth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_4` VARCHAR(255) NULL DEFAULT NULL , `birthdate_fourth` DATE NULL DEFAULT NULL , `id_number_fourth` VARCHAR(255) NULL DEFAULT NULL , `house_rented` VARCHAR(255) NOT NULL , `discount_amount` INT(255) NULL DEFAULT NULL , `total_price` BIGINT(1000) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ */
+
 function create_menus() {
     add_menu_page(
         'Reserveringen',
@@ -811,7 +815,72 @@ function reservation_settings_page() {
     <?php
 }
 
+function handle_booking_form_submit() {
+    global $wpdb;
+
+    $query = $wpdb->insert(
+        'bookings',
+        array(
+            'start_date' => sanitize_text_field($_POST['start_date']),
+            'end_date' => sanitize_text_field($_POST['end_date']),
+            'home' => sanitize_text_field($_POST['home']),
+            'first_name' => sanitize_text_field($_POST['first_name']),
+            'last_name' => sanitize_text_field($_POST['last_name']),
+            'birthdate' => sanitize_text_field($_POST['birthdate']),
+            'nationality' => sanitize_text_field($_POST['nationality']),
+            'address' => sanitize_text_field($_POST['address']),
+            'city' => sanitize_text_field($_POST['city']),
+            'zipcode' => sanitize_text_field($_POST['zipcode']),
+            'id_number' => sanitize_text_field($_POST['id_number_first']),
+            'email' => sanitize_text_field($_POST['email']),
+            'phone' => sanitize_text_field($_POST['phone']),
+            'animals' => sanitize_text_field($_POST['animals'] ?? NULL),
+            'child_bed' => sanitize_text_field($_POST['child_bed'] ?? NULL),
+            'comments' => sanitize_text_field($_POST['comments'] ?? NULL),
+            'amount_persons' => sanitize_text_field($_POST['amount_persons']),
+            'name_first_second' => sanitize_text_field($_POST['name_first_second'] ?? NULL),
+            'name_last_second' => sanitize_text_field($_POST['name_last_second'] ?? NULL),
+            'city_second' => sanitize_text_field($_POST['city_second'] ?? NULL),
+            'nationality_person_2' => sanitize_text_field($_POST['nationality_person_2'] ?? NULL),
+            'birthdate_second' => sanitize_text_field($_POST['birthdate_second'] ?? NULL),
+            'id_number_second' => sanitize_text_field($_POST['id_number_second'] ?? NULL),
+            'first_name_thirth' => sanitize_text_field($_POST['first_name_thirth'] ?? NULL),
+            'last_name_thirth' => sanitize_text_field($_POST['last_name_thirth'] ?? NULL),
+            'city_thirth' => sanitize_text_field($_POST['city_thirth'] ?? NULL),
+            'nationality_person_3' => sanitize_text_field($_POST['nationality_person_3'] ?? NULL),
+            'birthdate_thirth' => sanitize_text_field($_POST['birthdate_thirth'] ?? NULL),
+            'id_number_thirth' => sanitize_text_field($_POST['id_number_thirth'] ?? NULL),
+            'first_name_fourth' => sanitize_text_field($_POST['first_name_fourth'] ?? NULL),
+            'last_name_fourth' => sanitize_text_field($_POST['last_name_fourth'] ?? NULL),
+            'city_fourth' => sanitize_text_field($_POST['city_fourth'] ?? NULL),
+            'nationality_person_4' => sanitize_text_field($_POST['nationality_person_4'] ?? NULL),
+            'birthdate_fourth' => sanitize_text_field($_POST['birthdate_fourth'] ?? NULL),
+            'id_number_fourth' => sanitize_text_field($_POST['id_number_fourth'] ?? NULL),
+            'house_rented' => sanitize_text_field($_POST['home']),
+            'discount_amount' => 0,
+            'total_price' => sanitize_text_field($_POST['total_price_hidden']),
+            'is_paid' => 0,
+            'accepted' => 0,
+            'is_viewed' => 0,
+        )
+    );
+
+    if (!$query) {
+        echo '<div class="container">';
+        echo '<h6>Uw aanvraag is verstuurd!</h6>';
+        echo '</div>';
+
+        return;
+    }
+
+    echo 'Je aanvraag is verstuurd';
+}
+
 function booking_form() {
+    if (isset($_POST['booking_form_submit'])) {
+        handle_booking_form_submit();
+    }
+
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css">
@@ -820,12 +889,29 @@ function booking_form() {
         <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
             <div class="month">
                 <ul>
-                    <li class="prev">&#10094;</li>
-                    <li class="next">&#10095;</li>
+                    <select id="month-select" name="month">
+                        <option value="0">Januari</option>
+                        <option value="1">Februari</option>
+                        <option value="2">Maart</option>
+                        <option value="3">April</option>
+                        <option value="4">Mei</option>
+                        <option value="5">Juni</option>
+                        <option value="6">Juli</option>
+                        <option value="7">Augustus</option>
+                        <option value="8">September</option>
+                        <option value="9">Oktober</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+                    <select id="year-select" name="year">
+                        <!-- Dynamisch toevoegen van jaren via JS -->
+                    </select>
+                    <!-- 
                     <li id="month-year" name="month-year">
                         November<br>
                         <span style="font-size:18px" id="year">2025</span>
                     </li>
+                    -->
                 </ul>
             </div>
 
@@ -874,6 +960,8 @@ function booking_form() {
             </ul>
 
             <input type="hidden" name="days_to_rent" id="selected_days" value="">
+            <input type="hidden" name="start_date" id="start_date" value="">
+            <input type="hidden" name="end_date" id="end_date" value="">
 
             <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span></p>
 
@@ -881,7 +969,7 @@ function booking_form() {
 
             <div class="mb-3">
                 <h1>Huis/appartement</h1>
-                <select class="form-select" aria-label="Default select example" id="home" name="home" onchange="changePrice(event)">
+                <select class="form-select" aria-label="" id="home" name="home" onchange="changePrice(event)">
                     <option selected disabled>Selecteer</option>
                     <?php
                     global $wpdb;
@@ -894,7 +982,7 @@ function booking_form() {
 
                     foreach ($houses as $house) {
                         ?>
-                        <option value="<?php echo $house->price; ?>"><?php echo $house->name; ?></option>
+                        <option value="<?php echo $house->name; ?>" data-price="<?php echo $house->price; ?>"><?php echo $house->name; ?></option>
                         <?php
                     }
                     ?>
@@ -922,7 +1010,7 @@ function booking_form() {
                     </div>
 
                     <div class="mb-3">
-                        <label for="birthdate" class="form-label">Nationaliteit</label>
+                        <label for="nationality" class="form-label">Nationaliteit</label>
                         <select class="form-select" aria-label="Default select example" id="nationality" name="nationality" onchange="showHideIdFirst()">
                             <option selected disabled>Selecteer</option>
                             <option value="NL">Nederlands</option>
@@ -997,7 +1085,7 @@ function booking_form() {
 
                 <div class="col">
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Opmerkingen</label>
+                        <label for="comments" class="form-label">Opmerkingen</label>
                         <textarea class="form-control" aria-label="With textarea" id="comments" name="comments"></textarea>
                     </div>
                 </div>
@@ -1017,7 +1105,7 @@ function booking_form() {
 
             <h1>Aantal personen</h1>
             <div class="mb-3">
-                <label for="birthdate" class="form-label">Aantal personen:</label>
+                <label for="amount_persons" class="form-label">Aantal personen:</label>
                 <select class="form-select" aria-label="Default select example" id="amount_persons" name="amount_persons" onchange="changeExtraPersons(event)">
                     <option selected disabled>Selecteer</option>
                     <option value="1">1</option>
@@ -1032,13 +1120,13 @@ function booking_form() {
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
-                            <label for="name_second" class="form-label">Voornaam</label>
+                            <label for="name_first_second" class="form-label">Voornaam</label>
                             <input type="text" class="form-control" id="name_first_second" name="name_second" aria-describedby="">
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="name_second" class="form-label">Achternaam</label>
+                            <label for="name_last_second" class="form-label">Achternaam</label>
                             <input type="text" class="form-control" id="name_last_second" name="name_second" aria-describedby="">
                         </div>
                     </div>
@@ -1054,7 +1142,7 @@ function booking_form() {
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="birthdate" class="form-label">Nationaliteit</label>
+                            <label for="nationality_person_2" class="form-label">Nationaliteit</label>
                             <select class="form-select" aria-label="Default select example" id="nationality_person_2" name="nationality_person_2" onchange="showHideIdSecond()">
                                 <option selected disabled>Selecteer</option>
                                 <option value="NL">Nederlands</option>
@@ -1074,7 +1162,7 @@ function booking_form() {
                     <div class="col">
                         <div class="mb-3" style="display: none;" id="id_number_second">
                             <label for="id_number_second" class="form-label">ID/paspoort nummer</label>
-                            <input type="text" class="form-control" id="city_fourth" name="id_number_second" aria-describedby="">
+                            <input type="text" class="form-control" id="id_number_second" name="id_number_second" aria-describedby="">
                         </div>
                     </div>
                 </div>
@@ -1160,7 +1248,7 @@ function booking_form() {
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label for="birthdate" class="form-label">Nationaliteit</label>
+                            <label for="nationality_person_4" class="form-label">Nationaliteit</label>
                             <select class="form-select" aria-label="Default select example" id="nationality_person_4" name="nationality_person_4" onchange="showHideIdFourth()">
                                 <option selected disabled>Selecteer</option>
                                 <option value="NL">Nederlands</option>
@@ -1190,10 +1278,11 @@ function booking_form() {
             <!-- Total pricing -->
             <h1>Prijs</h1>
             <div class="">
-                <h2 class="d-inline">€<div class="d-inline" id="total_price"></div></h2>
+                <h2 class="d-inline">€<div class="d-inline" id="total_price" name="total_price"></div></h2>
+                <input type="hidden" id="total_price_hidden" name="total_price_hidden" value=""></input>
             </div>
 
-            <button type="submit" name="booking_form_submitted" class="btn btn-primary">Verzend</button>
+            <button type="submit" name="booking_form_submit" class="btn btn-primary">Verzend</button>
         </form>
     </div>
 
@@ -1315,6 +1404,17 @@ function booking_form() {
             changePrice();
         }
 
+        //
+        // Calendar
+        //
+        function getMinAndMaxDaysFromString(input) {
+            const numbersFromString = String(input).split(',').map(Number);
+            const minNumber = Math.min(...numbersFromString);
+            const maxNumber = Math.max(...numbersFromString);
+
+            return {minNumber, maxNumber}
+        }
+
         const days = document.querySelectorAll('#days_to_rent li');
         const selectedDaysInput = document.getElementById('selected_days');
 
@@ -1325,16 +1425,71 @@ function booking_form() {
                 const selectedDays = [];
                 document.querySelectorAll('#days_to_rent li.selected').forEach(selectedDay => {
                     selectedDays.push(selectedDay.getAttribute('data-day'));
-                    changePrice();
+
                 });
 
                 selectedDaysInput.value = selectedDays.join(',');
+
+                const res = getMinAndMaxDaysFromString(input = selectedDaysInput.value);
+                const selectedYear = document.getElementById("year-select");
+                const selectedMonth = document.getElementById("month-select");
+                const startDate = new Date(selectedYear.value, selectedMonth.value, res.minNumber);
+                const endDate = new Date(selectedYear.value, selectedMonth.value, res.maxNumber);
+
+                console.log(startDate.toISOString(), endDate.toISOString());
+                document.getElementById('start_date').value = startDate.toISOString();
+                document.getElementById('end_date').value = endDate.toISOString();
+
+                changePrice();
             });
         });
 
+        const monthSelect = document.getElementById("month-select");
+        const yearSelect = document.getElementById("year-select");
+        const daysToRent = document.getElementById("days-to-rent");
+
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth();
+
+        for (let i = currentYear - 10; i <= currentYear + 10; i++) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+
+        monthSelect.value = currentMonth;
+        yearSelect.value = currentYear;
+
+        function getDaysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+        function updateCalendar() {
+            const selectedMonth = parseInt(monthSelect.value);
+            const selectedYear = parseInt(yearSelect.value);
+            const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
+
+            daysToRent.innerHTML = "";
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const li = document.createElement("li");
+                li.setAttribute("data-day", day);
+                li.textContent = day;
+                daysToRent.appendChild(li);
+            }
+        }
+
+        monthSelect.addEventListener("change", updateCalendar);
+        yearSelect.addEventListener("change", updateCalendar);
+
+        updateCalendar();
+
         function changePrice() {
-            var homePrice = document.getElementById('home').value;
+            const selectHome = document.getElementById('home')
+            var homePrice = (selectHome.options[selectHome.selectedIndex]).dataset.price;
             var selectedDaysInput = (document.getElementById('selected_days').value).split(',');
+
             if (document.getElementById('animals').checked) {
                 var animals = document.getElementById('animals').value;
             } else {
@@ -1366,6 +1521,7 @@ function booking_form() {
                 Number(extraPeoplePrice);
 
             document.getElementById('total_price').innerHTML = totalHomePrice;
+            document.getElementById('total_price_hidden').value = totalHomePrice;
         }
 
         function showHideIdFirst() {
@@ -1396,7 +1552,6 @@ function booking_form() {
                 document.getElementById('id_number_fourth').style.display = 'none';
             }
         }
-
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
