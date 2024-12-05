@@ -815,21 +815,64 @@ function reservation_settings_page() {
     <?php
 }
 
-function handle_booking_form() {
+function handle_booking_form_submit() {
     global $wpdb;
 
     $query = $wpdb->insert(
         'bookings',
         array(
-            'test' => $wpdb,
+            'start_date' => sanitize_text_field($_POST['start_date']),
+            'end_date' => sanitize_text_field($_POST['end_date']),
+            'home' => sanitize_text_field($_POST['home']),
+            'first_name' => sanitize_text_field($_POST['first_name']),
+            'last_name' => sanitize_text_field($_POST['last_name']),
+            'birthdate' => sanitize_text_field($_POST['birthdate']),
+            'nationality' => sanitize_text_field($_POST['nationality']),
+            'address' => sanitize_text_field($_POST['address']),
+            'city' => sanitize_text_field($_POST['city']),
+            'zipcode' => sanitize_text_field($_POST['zipcode']),
+            'id_number' => sanitize_text_field($_POST['id_number_first']),
+            'email' => sanitize_text_field($_POST['email']),
+            'phone' => sanitize_text_field($_POST['phone']),
+            'animals' => sanitize_text_field($_POST['animals'] ?? NULL),
+            'child_bed' => sanitize_text_field($_POST['child_bed'] ?? NULL),
+            'comments' => sanitize_text_field($_POST['comments'] ?? NULL),
+            'amount_persons' => sanitize_text_field($_POST['amount_persons']),
+            'name_first_second' => sanitize_text_field($_POST['name_first_second'] ?? NULL),
+            'name_last_second' => sanitize_text_field($_POST['name_last_second'] ?? NULL),
+            'city_second' => sanitize_text_field($_POST['city_second'] ?? NULL),
+            'nationality_person_2' => sanitize_text_field($_POST['nationality_person_2'] ?? NULL),
+            'birthdate_second' => sanitize_text_field($_POST['birthdate_second'] ?? NULL),
+            'id_number_second' => sanitize_text_field($_POST['id_number_second'] ?? NULL),
+            'first_name_thirth' => sanitize_text_field($_POST['first_name_thirth'] ?? NULL),
+            'last_name_thirth' => sanitize_text_field($_POST['last_name_thirth'] ?? NULL),
+            'city_thirth' => sanitize_text_field($_POST['city_thirth'] ?? NULL),
+            'nationality_person_3' => sanitize_text_field($_POST['nationality_person_3'] ?? NULL),
+            'birthdate_thirth' => sanitize_text_field($_POST['birthdate_thirth'] ?? NULL),
+            'id_number_thirth' => sanitize_text_field($_POST['id_number_thirth'] ?? NULL),
+            'first_name_fourth' => sanitize_text_field($_POST['first_name_fourth'] ?? NULL),
+            'last_name_fourth' => sanitize_text_field($_POST['last_name_fourth'] ?? NULL),
+            'city_fourth' => sanitize_text_field($_POST['city_fourth'] ?? NULL),
+            'nationality_person_4' => sanitize_text_field($_POST['nationality_person_4'] ?? NULL),
+            'birthdate_fourth' => sanitize_text_field($_POST['birthdate_fourth'] ?? NULL),
+            'id_number_fourth' => sanitize_text_field($_POST['id_number_fourth'] ?? NULL),
+            'house_rented' => sanitize_text_field($_POST['home']),
+            'discount_amount' => 0,
+            'total_price' => sanitize_text_field($_POST['total_price']),
         )
     );
 
+    if (!$query) {
+        echo 'Er ging iets mis!';
+        return;
+    }
+
+    echo 'Je aanvraag is verstuurd';
 }
 
 function booking_form() {
     if (isset($_POST['booking_form_submit'])) {
-        handle_booking_form();
+        handle_booking_form_submit();
     }
 
     ?>
@@ -911,8 +954,8 @@ function booking_form() {
             </ul>
 
             <input type="hidden" name="days_to_rent" id="selected_days" value="">
-            <input type="hidden" name="start_day" id="start_day" value="">
-            <input type="hidden" name="end_day" id="end_day" value="">
+            <input type="hidden" name="start_date" id="start_date" value="">
+            <input type="hidden" name="end_date" id="end_date" value="">
 
             <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span></p>
 
@@ -920,7 +963,7 @@ function booking_form() {
 
             <div class="mb-3">
                 <h1>Huis/appartement</h1>
-                <select class="form-select" aria-label="Default select example" id="home" name="home" onchange="changePrice(event)">
+                <select class="form-select" aria-label="" id="home" name="home" onchange="changePrice(event)">
                     <option selected disabled>Selecteer</option>
                     <?php
                     global $wpdb;
@@ -933,7 +976,7 @@ function booking_form() {
 
                     foreach ($houses as $house) {
                         ?>
-                        <option value="<?php echo $house->price; ?>"><?php echo $house->name; ?></option>
+                        <option value="<?php echo $house->name; ?>" data-price="<?php echo $house->price; ?>"><?php echo $house->name; ?></option>
                         <?php
                     }
                     ?>
@@ -1229,7 +1272,8 @@ function booking_form() {
             <!-- Total pricing -->
             <h1>Prijs</h1>
             <div class="">
-                <h2 class="d-inline">€<div class="d-inline" id="total_price"></div></h2>
+                <h2 class="d-inline">€<div class="d-inline" id="total_price" name="total_price"></div></h2>
+                <input type="hidden" id="total_price" name="total_price"><div></div></input>
             </div>
 
             <button type="submit" name="booking_form_submit" class="btn btn-primary">Verzend</button>
@@ -1386,9 +1430,9 @@ function booking_form() {
                 const startDate = new Date(selectedYear.value, selectedMonth.value, res.minNumber);
                 const endDate = new Date(selectedYear.value, selectedMonth.value, res.maxNumber);
 
-                console.log(startDate.toLocaleDateString(), endDate.toLocaleDateString());
-                document.getElementById('start_day').value = startDate.toLocaleDateString();
-                document.getElementById('end_day').value = endDate.toLocaleDateString();
+                console.log(startDate.toISOString(), endDate.toISOString());
+                document.getElementById('start_date').value = startDate.toISOString();
+                document.getElementById('end_date').value = endDate.toISOString();
 
                 changePrice();
             });
@@ -1436,8 +1480,10 @@ function booking_form() {
         updateCalendar();
 
         function changePrice() {
-            var homePrice = document.getElementById('home').value;
+            const selectHome = document.getElementById('home')
+            var homePrice = (selectHome.options[selectHome.selectedIndex]).dataset.price;
             var selectedDaysInput = (document.getElementById('selected_days').value).split(',');
+
             if (document.getElementById('animals').checked) {
                 var animals = document.getElementById('animals').value;
             } else {
