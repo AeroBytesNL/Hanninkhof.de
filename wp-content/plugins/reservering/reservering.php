@@ -876,6 +876,41 @@ function handle_booking_form_submit() {
     echo 'Je aanvraag is verstuurd';
 }
 
+function fetch_bookings_for_home() {
+    global $wpdb;
+
+    // Controleer of de AJAX-aanroep geldig is
+    if (!isset($_POST['home']) || empty($_POST['home'])) {
+        wp_send_json_error('Geen huis geselecteerd.');
+    }
+
+    $home = sanitize_text_field($_POST['home']);
+
+    // Haal de boekingen op voor het geselecteerde huis
+    $bookings = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT START_DATE, END_DATE FROM bookings WHERE home = %s",
+            $home
+        ),
+        ARRAY_A
+    );
+
+    // Stuur boekingen terug als JSON
+    wp_send_json_success($bookings);
+}
+
+add_action('wp_ajax_fetch_bookings_for_home', 'fetch_bookings_for_home');
+add_action('wp_ajax_nopriv_fetch_bookings_for_home', 'fetch_bookings_for_home');
+
+function enqueue_custom_scripts() {
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/custom.js', ['jquery'], null, true);
+
+    // AJAX URL beschikbaar maken
+    wp_localize_script('custom-script', 'ajaxurl', admin_url('admin-ajax.php'));
+}
+
+add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
+
 function booking_form() {
     if (isset($_POST['booking_form_submit'])) {
         handle_booking_form_submit();
@@ -887,6 +922,31 @@ function booking_form() {
 
     <div class="container mt-3" style="max-width: 700px;">
         <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
+
+        <div class="mb-3">
+                <h1>Huis/appartement</h1>
+                <select class="form-select" aria-label="" id="home" name="home" onchange="changePrice(event)">
+                    <option selected disabled>Selecteer</option>
+                    <?php
+                    global $wpdb;
+
+                    $houses = $wpdb->get_results(
+                    "
+                    SELECT * FROM `houses`;
+                    "
+                    );
+
+                    foreach ($houses as $house) {
+                        ?>
+                        <option value="<?php echo $house->name; ?>" data-price="<?php echo $house->price; ?>"><?php echo $house->name; ?></option>
+                        <?php
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <hr>
+
             <div class="month">
                 <ul>
                     <select id="month-select" name="month">
@@ -934,28 +994,6 @@ function booking_form() {
             <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span></p>
 
             <hr>
-
-            <div class="mb-3">
-                <h1>Huis/appartement</h1>
-                <select class="form-select" aria-label="" id="home" name="home" onchange="changePrice(event)">
-                    <option selected disabled>Selecteer</option>
-                    <?php
-                    global $wpdb;
-
-                    $houses = $wpdb->get_results(
-                    "
-                    SELECT * FROM `houses`;
-                    "
-                    );
-
-                    foreach ($houses as $house) {
-                        ?>
-                        <option value="<?php echo $house->name; ?>" data-price="<?php echo $house->price; ?>"><?php echo $house->name; ?></option>
-                        <?php
-                    }
-                    ?>
-                </select>
-            </div>
 
             <div class="row">
                 <h1>Boeker</h1>
@@ -1346,12 +1384,103 @@ function booking_form() {
     </style>
 
     <script>
+        const daysToRentSecond = document.getElementById("days_to_rent");
+        const selectedDaysInput = document.getElementById('selected_days');
+
+        daysToRentSecond.addEventListener('click', function (event) {
+            if (event.target.tagName === 'LI') {
+                const dayElement = event.target;
+
+                if (!this.classList.contains("booked")) {
+                    dayElement.classList.toggle('selected');
+
+                }
+
+                const selectedDays = [];
+                document.querySelectorAll('#days_to_rent li.selected').forEach(selectedDay => {
+                    selectedDays.push(selectedDay.getAttribute('data-day'));
+                });
+
+                selectedDaysInput.value = selectedDays.join(',');
+
+                const res = getMinAndMaxDaysFromString(selectedDaysInput.value);
+                const selectedYear = document.getElementById("year-select");
+                const selectedMonth = document.getElementById("month-select");
+                const startDate = new Date(selectedYear.value, selectedMonth.value, res.minNumber);
+                const endDate = new Date(selectedYear.value, selectedMonth.value, res.maxNumber);
+
+                document.getElementById('start_date').value = startDate.toISOString();
+                document.getElementById('end_date').value = endDate.toISOString();
+
+                changePrice();
+            }
+        });
+
         const monthSelect = document.getElementById("month-select");
         const yearSelect = document.getElementById("year-select");
         const daysToRent = document.getElementById("days_to_rent");
 
         const currentYear = new Date().getFullYear();
         const currentMonth = new Date().getMonth();
+
+        const homeSelect = document.getElementById('home');
+
+        homeSelect.addEventListener('change', function () {
+            const selectedHome = this.value;
+
+            if (typeof ajaxurl === 'undefined') {
+                console.error('ajaxurl is niet gedefinieerd');
+                return;
+            }
+
+            fetch(ajaxurl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    action: 'fetch_bookings_for_home',
+                    home: selectedHome,
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        const bookings = data.data;
+                        updateCalendarWithBookings(bookings);
+                    } else {
+                        console.error(data.data || 'Geen boekingen gevonden.');
+                    }
+                })
+                .catch((error) => console.error('Error fetching bookings:', error));
+        });
+
+        function updateCalendarWithBookings(bookings) {
+            const selectedMonth = parseInt(monthSelect.value);
+            const selectedYear = parseInt(yearSelect.value);
+            const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
+
+            daysToRent.innerHTML = "";
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const li = document.createElement("li");
+                li.setAttribute("data-day", day);
+                li.textContent = day;
+
+                // Controleer of deze dag in de boekingen valt
+                const currentDate = new Date(selectedYear, selectedMonth, day);
+                const isBooked = bookings.some((booking) => {
+                    const startDate = new Date(booking.START_DATE);
+                    const endDate = new Date(booking.END_DATE);
+
+                    return currentDate >= startDate && currentDate <= endDate;
+                });
+
+                if (isBooked) {
+                    li.classList.add('booked');
+                }
+
+                daysToRent.appendChild(li);
+            }
+        }
 
         for (let i = currentYear - 10; i <= currentYear + 10; i++) {
             const option = document.createElement("option");
@@ -1429,33 +1558,6 @@ function booking_form() {
 
             return {minNumber, maxNumber}
         }
-
-        const days = document.querySelectorAll('#days_to_rent li');
-        const selectedDaysInput = document.getElementById('selected_days');
-
-        days.forEach(day => {
-            day.addEventListener('click', function() {
-                this.classList.toggle('selected');
-                const selectedDays = [];
-                document.querySelectorAll('#days_to_rent li.selected').forEach(selectedDay => {
-                    selectedDays.push(selectedDay.getAttribute('data-day'));
-
-                });
-
-                selectedDaysInput.value = selectedDays.join(',');
-
-                const res = getMinAndMaxDaysFromString(input = selectedDaysInput.value);
-                const selectedYear = document.getElementById("year-select");
-                const selectedMonth = document.getElementById("month-select");
-                const startDate = new Date(selectedYear.value, selectedMonth.value, res.minNumber);
-                const endDate = new Date(selectedYear.value, selectedMonth.value, res.maxNumber);
-
-                document.getElementById('start_date').value = startDate.toISOString();
-                document.getElementById('end_date').value = endDate.toISOString();
-
-                changePrice();
-            });
-        });
 
         function changePrice() {
             const selectHome = document.getElementById('home')
