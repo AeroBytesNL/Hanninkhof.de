@@ -88,10 +88,20 @@ function create_menus() {
 
 add_action('admin_menu', 'create_menus');
 
+function get_admin_bookings() {
+    global $wpdb;
+
+    $bookings = $wpdb->get_results(
+       "SELECT * FROM bookings ORDER BY id DESC "
+    );
+    return $bookings;
+}
+
 /**
  * The reservation page
  */
 function reservation_options_page() {
+
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css">
@@ -100,6 +110,7 @@ function reservation_options_page() {
 
     <hr>
 
+    <!--
     <div class="container">
         <div class="month">
             <ul>
@@ -159,6 +170,8 @@ function reservation_options_page() {
         <p>Geboekt: <span class="badge text-bg-danger p-2 mr-2">&nbsp;</span> Onbevestigt: <span class="badge text-bg-warning p-2 mr-3">&nbsp;</span></p>
     </div>
 
+    -->
+
     <div class="container">
         <h1>Overzicht</h1>
 
@@ -169,52 +182,57 @@ function reservation_options_page() {
                     <th scope="col">Naam</th>
                     <th scope="col">Aankomst</th>
                     <th scope="col">Vertrek</th>
-                    <th scope="col">Geboekt op</th>
+                    <th scope="col">Aantal personen</th>
                     <th scope="col">Aantal nachten</th>
+                    <th scope="col">Totaal prijs</th>
                     <th scope="col">Betaling status</th>
                     <th scope="col">Status</th>
                     <th scope="col">Weergeven</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><a href="#">Voorbeeld huis</a></td>
-                    <td><a href="#">K. de Reus</a></td>
-                    <td>29-11-2024</td>
-                    <td>30-11-2024</td>
-                    <td>29-11-2024</td>
-                    <td>1</td>
-                    <td>
-                        <span class="badge text-bg-danger">NIET BETAALD</span>
-                    </td>
-                    <td>
-                        <span class="badge text-bg-danger">IN BEHANDELING</span>
-                    </td>
-                    <td>
-                        <a href="/wp-admin/index.php?page=reservering-weergeven">
-                            <span class="dashicons dashicons-search"></span>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><a href="#">Voorbeeld huis</a></td>
-                    <td><a href="#">K. de Reus</a></td>
-                    <td>29-11-2024</td>
-                    <td>30-11-2024</td>
-                    <td>29-11-2024</td>
-                    <td>1</td>
-                    <td>
-                        <span class="badge text-bg-success">BETAALD</span>
-                    </td>
-                    <td>
-                        <span class="badge text-bg-success">BEHANDELD</span>
-                    </td>
-                    <td>
-                        <a href="/wp-admin/index.php?page=reservering-weergeven">
-                            <span class="dashicons dashicons-search"></span>
-                        </a>
-                    </td>
-                </tr>
+                <?php
+                foreach (get_admin_bookings() as $booking) {
+                    ?>
+                    <tr>
+                        <td><a href="#"><?php echo $booking->home; ?></a></td>
+                        <td><a href="#"><?php echo $booking->first_name . ' ' . $booking->last_name; ?></a></td>
+                        <td><?php echo date_format(date_create($booking->start_date), 'd-m-Y'); ?></td>
+                        <td><?php echo date_format(date_create($booking->end_date), 'd-m-Y'); ?></td>
+                        <td><?php echo $booking->amount_persons; ?></td>
+                        <td>
+                            <?php
+                                echo (new DateTime($booking->end_date))->diff(new DateTime($booking->start_date))->format('%a');
+                            ?>
+                        </td>
+                        <td>€<?php echo $booking->total_price; ?></td>
+                        <td>
+                            <?php
+                                if ($booking->is_paid == 0) {
+                                    echo '<span class="badge text-bg-danger">NIET BETAALD</span>';
+                                } else {
+                                    echo '<span class="badge text-bg-success">BETAALD</span>';
+                                }
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                                if ($booking->accepted == 0) {
+                                    echo '<span class="badge text-bg-danger">IN BEHANDELING</span>';
+                                } else {
+                                    echo '<span class="badge text-bg-success">BEHANDELD</span>';
+                                }
+                            ?>
+                        </td>
+                        <td>
+                            <a href="/wp-admin/index.php?page=reservering-weergeven">
+                                <span class="dashicons dashicons-search"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
+                }
+                ?>
             </tbody>
         </table>
     </div>
