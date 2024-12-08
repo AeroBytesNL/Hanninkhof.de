@@ -101,7 +101,6 @@ function get_admin_bookings() {
  * The reservation page
  */
 function reservation_options_page() {
-
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css">
@@ -225,7 +224,7 @@ function reservation_options_page() {
                             ?>
                         </td>
                         <td>
-                            <a href="/wp-admin/index.php?page=reservering-weergeven">
+                            <a href="/wp-admin/index.php?page=reservering-weergeven&booking_id=<?php echo $booking->id ?>">
                                 <span class="dashicons dashicons-search"></span>
                             </a>
                         </td>
@@ -238,7 +237,6 @@ function reservation_options_page() {
     </div>
 
     <style>
-
         .month {
             padding: 10px 25px;
             width: 100%;
@@ -326,48 +324,410 @@ function reservation_options_page() {
     <?php
 }
 
+function handle_reservation_view_update() {
+    if (!isset($_POST['booking_view_update_submit'])) {
+        return;
+    }
+
+}
+
+function handle_reservation_view_accept() {
+    if (!isset($_POST['booking_view_accept_booking_submit'])) {
+        return;
+    }
+}
+
+function handle_reservation_view_deny() {
+    if (!isset($_POST['booking_view_deny_submit'])) {
+        return;
+    }
+}
+
+function handle_reservation_view_delete() {
+    if (!isset($_POST['booking_view_delete_submit'])) {
+        return;
+    }
+}
+
 /**
  * Shows an specific reservation
  */
 function reservation_view_page() {
+    global $wpdb;
+
+    $booking_id = intval($_GET['booking_id']);
+
+    $booking = $wpdb->get_results(
+        $wpdb->prepare(
+            "
+                SELECT * FROM `bookings` WHERE id = $booking_id
+            "
+        )
+    )[0];
+
+    $houses = $wpdb->get_results(
+        $wpdb->prepare(
+            "
+                SELECT * FROM `houses`
+            "
+        )
+    );
+    if (!$booking) {
+        echo 'Geen boeking gevonden, OEPS';
+    }
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
-    <h1 class="mt-2 ml-2">Reservering #1</h1>
+    <h1 class="mt-2 ml-2">Reservering</h1>
 
     <hr>
 
-    <div class="container text-center ">
-        <h1>Reservering #1</h1>
+    <div class="container">
+        <div class="d-flex justify-content-center">
+        <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
 
-        <img class="" src="https://media.istockphoto.com/id/155666671/nl/vector/vector-illustration-of-red-house-icon.jpg?s=612x612&w=0&k=20&c=tFnYvPlhW4cv3A8R03hFjL6AMkHx7fFseemnck05Z4Y=" style="width: 120px;">
-        <p>Huis: Voorbeeld huis 1</p>
+    <div class="mb-3">
+        <h1>Huis/appartement</h1>
+        <select class="form-select" aria-label="" id="home" name="home" onchange="changePrice(event)">
+            <option selected disabled>Selecteer</option>
+            <?php
+            global $wpdb;
 
-        <form class="w-25 text-center ">
+            $houses = $wpdb->get_results(
+            "
+            SELECT * FROM `houses`;
+            "
+            );
+
+            foreach ($houses as $house) {
+                ?>
+                <option value="<?php echo $house->name; ?>" data-price="<?php echo $house->price; ?>" <?php if ($booking->home == $house->name) { echo 'selected'; } ?>><?php echo $house->name; ?></option>
+                <?php
+            }
+            ?>
+        </select>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Naam</label>
-                <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg" aria-label=".form-control-lg example">
+                <label for="start_date" class="form-label">Aankomst</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" aria-describedby="" value="<?php echo $booking->start_date; ?>">
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="mb-3">
+                <label for="end_date" class="form-label">Vertrek</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" aria-describedby="" value="<?php echo $booking->end_date; ?>">
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="days_to_rent" id="selected_days" value="">
+    <input type="hidden" name="start_date" id="start_date" value="">
+    <input type="hidden" name="end_date" id="end_date" value="">
+
+    <hr>
+
+    <div class="row">
+        <h1>Boeker</h1>
+        <div class="col">
+            <!-- Form -->
+            <div class="mb-3">
+                <label for="first_name" class="form-label">Naam</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="" placeholder="Voornaam" value="<?php echo $booking->first_name; ?>">
+            </div>
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Achternaam</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo $booking->last_name; ?>">
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="mb-3">
+                <label for="birthdate" class="form-label">Geboortedatum</label>
+
+                <input type="date" class="form-control" id="birthdate" name="birthdate" aria-describedby="" value="<?php echo $booking->birthdate; ?>">
             </div>
 
             <div class="mb-3">
-
+                <label for="nationality" class="form-label">Nationaliteit</label>
+                <select class="form-select" aria-label="Default select example" id="nationality" name="nationality" onchange="showHideIdFirst()">
+                    <option value="NL" <?php if ($booking->nationality == 'NL') { echo 'selected'; } ?>>Nederlands</option>
+                    <option value="GE" <?php if ($booking->nationality == 'GE') { echo 'selected'; } ?>>Duits</option>
+                </select>
             </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col">
             <div class="mb-3">
-
+                <label for="address" class="form-label">Adres</label>
+                <input type="text" class="form-control" id="address" name="address" aria-describedby="" value="<?php echo $booking->address ?>">
             </div>
+        </div>
+        <div class="col">
             <div class="mb-3">
-
+                <label for="city" class="form-label">Woonplaats</label>
+                <input type="text" class="form-control" id="city" name="city" aria-describedby="" value="<?php echo $booking->city ?>">
             </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col">
             <div class="mb-3">
-
+                <label for="zipcode" class="form-label">Postcode</label>
+                <input type="text" class="form-control" id="zipcode" name="zipcode" aria-describedby="" value="<?php echo $booking->zipcode ?>">
             </div>
+        </div>
+        <div class="col">
+            <div class="mb-3" style="display: none;" id="id_number_first">
+                <label for="id_number_first" class="form-label">ID/paspoort nummer</label>
+                <input type="text" class="form-control" id="id_number_first" name="id_number_first" aria-describedby="" value="<?php echo $booking->id_number ?>">
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col">
             <div class="mb-3">
-
+                <label for="email" class="form-label">Email adres</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="" value="<?php echo $booking->email ?>">
             </div>
-        </form>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="phone" class="form-label">Telefoonnummer</label>
+                <input type="text" class="form-control" id="phone" name="phone" aria-describedby="" value="<?php echo $booking->phone ?>">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h4>Opties</h4>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="5" id="animals" name="animals" onchange="changePrice()" <?php if ($booking->animals == 1) { echo 'checked'; } ?>>
+                <label class="form-check-label" for="animals">
+                    Huisdieren die mee komen (5€ extra)
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="10" id="child_bed" name="child_bed" onchange="changePrice()" <?php if ($booking->child_bed == 1) { echo 'checked'; } ?>>
+                <label class="form-check-label" for="child_bed">
+                Kinderbedje(ledikantje) (10€ extra)
+                </label>
+            </div>
+        </diV>
+
+        <div class="col">
+            <div class="mb-3">
+                <label for="comments" class="form-label">Opmerkingen</label>
+                <?php echo $booking->comments; ?>
+                <textarea class="form-control" aria-label="" id="comments" name="comments"><?php echo $booking->comments; ?></textarea>
+            </div>
+        </div>
+    </div>
+
+    <p>
+        Wintermaanden extra verwarmingskosten: 1 Oktober t/m 31 april 10 per nacht per appartement.
+        <br>
+        Toeristenbelasting: €2.10 p.p. per nacht 14 jaar en ouder.
+        <br>
+        Prijzen zijn op basis van 2 personen per nacht.
+        Extra personen zijn €10 p.p. per nacht voor 13>.
+        Kinderen 13< zijn gratis.
+    </p>
+
+    <hr>
+
+    <h1>Aantal personen</h1>
+
+    <div class="mb-3" style="display: block" id="person_2">
+        <p>Persoon 2:</p>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="name_first_second" class="form-label">Voornaam</label>
+                    <input type="text" class="form-control" id="name_first_second" name="name_second" aria-describedby="" value="<?php echo $booking->name_first_second ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="name_last_second" class="form-label">Achternaam</label>
+                    <input type="text" class="form-control" id="name_last_second" name="name_second" aria-describedby="" value="<?php echo $booking->name_last_second ?>">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="city_second" class="form-label">Woonplaats</label>
+                    <input type="text" class="form-control" id="city_second" name="city_second" aria-describedby="" value="<?php echo $booking->city_second ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="nationality_person_2" class="form-label">Nationaliteit</label>
+                    <select class="form-select" aria-label="Default select example" id="nationality_person_2" name="nationality_person_2" onchange="showHideIdSecond()">
+                        <option value="NL" <?php if ($booking->nationality_person_2 == 'NL') { echo 'selected'; } ?>>Nederlands</option>
+                        <option value="GE" <?php if ($booking->nationality_person_2 == 'GE') { echo 'selected'; } ?>>Duits</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="birthdate_second" class="form-label">Geboortedatum</label>
+                    <input type="date" class="form-control" id="birthdate_second" name="birthdate_second" aria-describedby="" value="<?php echo $booking->birthdate_second ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3" style="display: none;" id="id_number_second">
+                    <label for="id_number_second" class="form-label">ID/paspoort nummer</label>
+                    <input type="text" class="form-control" id="id_number_second" name="id_number_second" aria-describedby="" value="<?php echo $booking->id_number_second ?>">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3" style="display: block" id="person_3">
+        <p>Persoon 3:</p>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="first_name_thirth" class="form-label">Voornaam</label>
+                    <input type="text" class="form-control" id="first_name_thirth" name="first_name_thirth" aria-describedby="" value="<?php echo $booking->first_name_thirth ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="last_name_thirth" class="form-label">Achternaam</label>
+                    <input type="text" class="form-control" id="last_name_thirth" name="last_name_thirth" aria-describedby="" value="<?php echo $booking->last_name_thirth ?>">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="city_thirth" class="form-label">Woonplaats</label>
+                    <input type="text" class="form-control" id="city_thirth" name="city_thirth" aria-describedby="" value="<?php echo $booking->city_thirth ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="nationality_person_3" class="form-label">Nationaliteit</label>
+                    <select class="form-select" aria-label="Default select example" id="nationality_person_3" name="nationality_person_3" onchange="showHideIdThirth()">
+                        <option value="NL" <?php if ($booking->nationality_person_3 == 'NL') { echo 'selected'; } ?>>Nederlands</option>
+                        <option value="GE" <?php if ($booking->nationality_person_3 == 'GE') { echo 'selected'; } ?>>Duits</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="birthdate_thirth" class="form-label">Geboortedatum</label>
+                    <input type="date" class="form-control" id="birthdate_thirth" name="birthdate_thirth" aria-describedby="" value="<?php echo $booking->birthdate_thirth ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3" style="display: none;" id="id_number_thirth">
+                    <label for="id_number_thirth" class="form-label">ID/paspoort nummer</label>
+                    <input type="text" class="form-control" id="id_number_thirth" name="id_number_thirth" aria-describedby="" value="<?php echo $booking->id_number_thirth ?>">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3" style="display: block" id="person_4">
+        <p>Persoon 4:</p>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="first_name_fourth" class="form-label">Voornaam</label>
+                    <input type="text" class="form-control" id="first_name_fourth" name="first_name_fourth" aria-describedby="" value="<?php echo $booking->first_name_fourth ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="last_name_fourth" class="form-label">Achternaam</label>
+                    <input type="text" class="form-control" id="last_name_fourth" name="last_name_fourth" aria-describedby="" value="<?php echo $booking->last_name_fourth ?>">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="city_fourth" class="form-label">Woonplaats</label>
+                    <input type="text" class="form-control" id="city_fourth" name="city_fourth" aria-describedby="" value="<?php echo $booking->city_fourth ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="nationality_person_4" class="form-label">Nationaliteit</label>
+                    <select class="form-select" aria-label="Default select example" id="nationality_person_4" name="nationality_person_4" onchange="showHideIdFourth()">
+                    <option value="NL" <?php if ($booking->nationality_person_4 == 'NL') { echo 'selected'; } ?>>Nederlands</option>
+                    <option value="GE" <?php if ($booking->nationality_person_4 == 'GE') { echo 'selected'; } ?>>Duits</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="birthdate_fourth" class="form-label">Geboortedatum</label>
+                    <input type="date" class="form-control" id="birthdate_fourth" name="birthdate_fourth" aria-describedby="" value="<?php echo $booking->birthdate_fourth ?>">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3" style="display: none;" id="id_number_fourth">
+                    <label for="id_number_fourth" class="form-label">ID/paspoort nummer</label>
+                    <input type="text" class="form-control" id="id_number_fourth" name="id_number_fourth" aria-describedby="" value="<?php echo $booking->id_number_fourth ?>">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Total pricing -->
+    <h1>Prijs</h1>
+    <div class="">
+        <h2 class="d-inline">€<div class="d-inline" id="total_price" name="total_price"><?php echo $booking->total_price; ?></div></h2>
+        <input type="hidden" id="total_price_hidden" name="total_price_hidden" value=""></input>
+    </div>
+
+    <hr>
+
+    <h1>Beheer boeking</h1>
+
+    <button type="submit" name="booking_view_update_submit" class="btn btn-primary d-inline">Update</button>
+
+    <button type="submit" name="booking_view_accept_booking_submit" class="btn btn-success d-inline">Accepteer boeking</button>
+
+    <button type="submit" name="booking_view_deny_submit" class="btn btn-warning d-inline">Wijs boeking af</button>
+
+    <button type="submit" name="booking_view_delete_submit" class="btn btn-danger d-inline">verwijder boeking</button>
+
+    </form>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
