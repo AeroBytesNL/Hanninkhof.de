@@ -1101,7 +1101,7 @@ function reservation_create_house_page() {
                 'name' => $_POST['home_name'],
                 'price' => $_POST['home_price_per_person'],
                 'max_persons' => $_POST['max_persons'],
-                'animals_allowed' => $_POST['home_animals_allowed'],
+                'animals_allowed' => $_POST['home_animals_allowed'] ?? 0,
             )
         );
 
@@ -1140,13 +1140,6 @@ function reservation_create_house_page() {
                 <input class="form-check-input" type="checkbox" value="" id="home_animals_allowed" name="home_animals_allowed">
                 <label class="form-check-label" for="flexCheckDefault">
                     Huisdieren
-                </label>
-            </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="child_bed_allowed" name="child_bed_allowed">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Ledikantje
                 </label>
             </div>
 
