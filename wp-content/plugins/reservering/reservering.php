@@ -413,6 +413,16 @@ function reservation_view_page() {
     $booking_id = intval($_GET['booking_id']);
 
 	if (isset($_POST['booking_view_update_submit'])) {
+		if (isset($_POST['name_first_second']) && !empty($_POST['name_first_second'])) {
+			$amount_persons = 2;
+		} elseif (isset($_POST['name_first_thirth']) && !empty($_POST['name_first_thirth'])) {
+			$amount_persons = 3;
+		} elseif (isset($_POST['name_first_fourth']) && !empty($_POST['name_first_fourth'])) {
+			$amount_persons = 4;
+		} else {
+			$amount_persons = 1;
+		}
+
 		$updated = $wpdb->update(
 			'bookings',
 			array(
@@ -432,7 +442,7 @@ function reservation_view_page() {
 				'animals' => sanitize_text_field($_POST['animals'] ?? NULL),
 				'child_bed' => sanitize_text_field($_POST['child_bed'] ?? NULL),
 				'comments' => sanitize_text_field($_POST['comments'] ?? NULL),
-				'amount_persons' => intval(1),
+				'amount_persons' => intval($amount_persons),
 				'name_first_second' => sanitize_text_field($_POST['name_first_second'] ?? NULL),
 				'name_last_second' => sanitize_text_field($_POST['name_last_second'] ?? NULL),
 				'city_second' => sanitize_text_field($_POST['city_second'] ?? NULL),
@@ -479,6 +489,18 @@ function reservation_view_page() {
                     'id' => intval($_POST['booking_id']),
             )
         );
+    }
+
+    if (isset($_POST['booking_view_accept_payment_submit'])) {
+	    $updated = $wpdb->update(
+		    'bookings',
+		    array(
+			    'is_paid' => 1,
+		    ),
+		    array(
+			    'id' => intval($_POST['booking_id']),
+		    )
+	    );
     }
 
     $booking = $wpdb->get_results(
@@ -847,6 +869,8 @@ function reservation_view_page() {
     <button type="submit" name="booking_view_update_submit" class="btn btn-primary d-inline">Update</button>
 
     <button type="submit" name="booking_view_accept_booking_submit" class="btn btn-success d-inline">Accepteer boeking</button>
+
+    <button type="submit" name="booking_view_accept_payment_submit" class="btn btn-success d-inline">Accepteer boeking</button>
 
     <button type="submit" name="booking_view_deny_submit" class="btn btn-warning d-inline">Wijs boeking af</button>
 
