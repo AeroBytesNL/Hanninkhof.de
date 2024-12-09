@@ -325,16 +325,71 @@ function reservation_options_page() {
 }
 
 function handle_reservation_view_update() {
-    if (!isset($_POST['booking_view_update_submit'])) {
-        return;
-    }
+	global $wpdb;
+
+	$id = intval($_POST['booking_id']);
+
+	if (isset($_POST['booking_view_update_submit'])) {
+		$updated = $wpdb->update(
+			'bookings',
+			array(
+				'start_date' => sanitize_text_field($_POST['start_date']),
+				'end_date' => sanitize_text_field($_POST['end_date']),
+				'home' => sanitize_text_field($_POST['home']),
+				'first_name' => sanitize_text_field($_POST['first_name']),
+				'last_name' => sanitize_text_field($_POST['last_name']),
+				'birthdate' => sanitize_text_field($_POST['birthdate']),
+				'nationality' => sanitize_text_field($_POST['nationality']),
+				'address' => sanitize_text_field($_POST['address']),
+				'city' => sanitize_text_field($_POST['city']),
+				'zipcode' => sanitize_text_field($_POST['zipcode']),
+				'id_number' => sanitize_text_field($_POST['id_number_first']),
+				'email' => sanitize_email($_POST['email']),
+				'phone' => sanitize_text_field($_POST['phone']),
+				'animals' => sanitize_text_field($_POST['animals'] ?? NULL),
+				'child_bed' => sanitize_text_field($_POST['child_bed'] ?? NULL),
+				'comments' => sanitize_text_field($_POST['comments'] ?? NULL),
+				'amount_persons' => intval(1),
+				'name_first_second' => sanitize_text_field($_POST['name_first_second'] ?? NULL),
+				'name_last_second' => sanitize_text_field($_POST['name_last_second'] ?? NULL),
+				'city_second' => sanitize_text_field($_POST['city_second'] ?? NULL),
+				'nationality_person_2' => sanitize_text_field($_POST['nationality_person_2'] ?? NULL),
+				'birthdate_second' => sanitize_text_field($_POST['birthdate_second'] ?? NULL),
+				'id_number_second' => sanitize_text_field($_POST['id_number_second'] ?? NULL),
+				'first_name_thirth' => sanitize_text_field($_POST['first_name_thirth'] ?? NULL),
+				'last_name_thirth' => sanitize_text_field($_POST['last_name_thirth'] ?? NULL),
+				'city_thirth' => sanitize_text_field($_POST['city_thirth'] ?? NULL),
+				'nationality_person_3' => sanitize_text_field($_POST['nationality_person_3'] ?? NULL),
+				'birthdate_thirth' => sanitize_text_field($_POST['birthdate_thirth'] ?? NULL),
+				'id_number_thirth' => sanitize_text_field($_POST['id_number_thirth'] ?? NULL),
+				'first_name_fourth' => sanitize_text_field($_POST['first_name_fourth'] ?? NULL),
+				'last_name_fourth' => sanitize_text_field($_POST['last_name_fourth'] ?? NULL),
+				'city_fourth' => sanitize_text_field($_POST['city_fourth'] ?? NULL),
+				'nationality_person_4' => sanitize_text_field($_POST['nationality_person_4'] ?? NULL),
+				'birthdate_fourth' => sanitize_text_field($_POST['birthdate_fourth'] ?? NULL),
+				'id_number_fourth' => sanitize_text_field($_POST['id_number_fourth'] ?? NULL),
+				'house_rented' => sanitize_text_field($_POST['home']),
+				'discount_amount' => 0,
+			),
+			array( // Voorwaarde voor update
+				'id' => $id,
+			)
+		);
+
+		// Controleer het resultaat
+		if ($updated === false) {
+			echo 'Er is iets mis gegaan bij het updaten van de reservering.';
+		} elseif ($updated === 0) {
+			echo 'Geen wijzigingen doorgevoerd.';
+		} else {
+			echo 'Reservering is geüpdatet!';
+		}
+	}
 
 }
 
 function handle_reservation_view_accept() {
-    if (!isset($_POST['booking_view_accept_booking_submit'])) {
-        return;
-    }
+    echo 'jeej';
 }
 
 function handle_reservation_view_deny() {
@@ -357,6 +412,75 @@ function reservation_view_page() {
 
     $booking_id = intval($_GET['booking_id']);
 
+	if (isset($_POST['booking_view_update_submit'])) {
+		$updated = $wpdb->update(
+			'bookings',
+			array(
+				'start_date' => $_POST['start_date'],
+				'end_date' => $_POST['end_date'],
+				'home' => sanitize_text_field($_POST['home']),
+				'first_name' => sanitize_text_field($_POST['first_name']),
+				'last_name' => sanitize_text_field($_POST['last_name']),
+				'birthdate' => sanitize_text_field($_POST['birthdate']),
+				'nationality' => sanitize_text_field($_POST['nationality']),
+				'address' => sanitize_text_field($_POST['address']),
+				'city' => sanitize_text_field($_POST['city']),
+				'zipcode' => sanitize_text_field($_POST['zipcode']),
+				'id_number' => sanitize_text_field($_POST['id_number_first']),
+				'email' => sanitize_email($_POST['email']),
+				'phone' => sanitize_text_field($_POST['phone']),
+				'animals' => sanitize_text_field($_POST['animals'] ?? NULL),
+				'child_bed' => sanitize_text_field($_POST['child_bed'] ?? NULL),
+				'comments' => sanitize_text_field($_POST['comments'] ?? NULL),
+				'amount_persons' => intval(1),
+				'name_first_second' => sanitize_text_field($_POST['name_first_second'] ?? NULL),
+				'name_last_second' => sanitize_text_field($_POST['name_last_second'] ?? NULL),
+				'city_second' => sanitize_text_field($_POST['city_second'] ?? NULL),
+				'nationality_person_2' => sanitize_text_field($_POST['nationality_person_2'] ?? NULL),
+				'birthdate_second' => sanitize_text_field($_POST['birthdate_second'] ?? NULL),
+				'id_number_second' => sanitize_text_field($_POST['id_number_second'] ?? NULL),
+				'first_name_thirth' => sanitize_text_field($_POST['first_name_thirth'] ?? NULL),
+				'last_name_thirth' => sanitize_text_field($_POST['last_name_thirth'] ?? NULL),
+				'city_thirth' => sanitize_text_field($_POST['city_thirth'] ?? NULL),
+				'nationality_person_3' => sanitize_text_field($_POST['nationality_person_3'] ?? NULL),
+				'birthdate_thirth' => sanitize_text_field($_POST['birthdate_thirth'] ?? NULL),
+				'id_number_thirth' => sanitize_text_field($_POST['id_number_thirth'] ?? NULL),
+				'first_name_fourth' => sanitize_text_field($_POST['first_name_fourth'] ?? NULL),
+				'last_name_fourth' => sanitize_text_field($_POST['last_name_fourth'] ?? NULL),
+				'city_fourth' => sanitize_text_field($_POST['city_fourth'] ?? NULL),
+				'nationality_person_4' => sanitize_text_field($_POST['nationality_person_4'] ?? NULL),
+				'birthdate_fourth' => sanitize_text_field($_POST['birthdate_fourth'] ?? NULL),
+				'id_number_fourth' => sanitize_text_field($_POST['id_number_fourth'] ?? NULL),
+				'house_rented' => sanitize_text_field($_POST['home']),
+				'discount_amount' => 0,
+			),
+			array( // Voorwaarde voor update
+				'id' => intval($_POST['booking_id']),
+			)
+		);
+
+		// Controleer het resultaat
+		if ($updated === false) {
+			echo 'Er is iets mis gegaan bij het updaten van de reservering.';
+		} elseif ($updated === 0) {
+			echo 'Geen wijzigingen doorgevoerd.';
+		} else {
+			echo 'Reservering is geüpdatet!';
+		}
+	}
+
+    if (isset($_POST['booking_view_accept_booking_submit'])) {
+        $updated = $wpdb->update(
+                'bookings',
+            array(
+                    'accepted' => 1,
+            ),
+            array(
+                    'id' => intval($_POST['booking_id']),
+            )
+        );
+    }
+
     $booking = $wpdb->get_results(
         $wpdb->prepare(
             "
@@ -372,9 +496,11 @@ function reservation_view_page() {
             "
         )
     );
+
     if (!$booking) {
         echo 'Geen boeking gevonden, OEPS';
     }
+
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
@@ -385,7 +511,7 @@ function reservation_view_page() {
     <div class="container">
         <div class="d-flex justify-content-center">
         <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
-
+        <input type="hidden" value="<?php echo $booking_id; ?>" name="booking_id">
     <div class="mb-3">
         <h1>Huis/appartement</h1>
         <select class="form-select" aria-label="" id="home" name="home" onchange="changePrice(event)">
@@ -1032,10 +1158,100 @@ function reservation_create_house_page() {
     <?php
 }
 
+function my_plugin_download_file() {
+	if (isset($_GET['my_plugin_download_file'])) {
+		$file_name = sanitize_text_field($_GET['my_plugin_download_file']);
+		$file_path = WP_CONTENT_DIR . '/' . $file_name;
+
+		if (file_exists($file_path)) {
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
+			header('Content-Length: ' . filesize($file_path));
+			header('Pragma: no-cache');
+			header('Expires: 0');
+			flush();
+
+			readfile($file_path);
+			exit;
+		} else {
+			echo 'Bestand niet gevonden.';
+		}
+	}
+}
+add_action('init', 'my_plugin_download_file');
+
+function my_plugin_delete_file() {
+	if (isset($_GET['my_plugin_delete_file']) && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'delete_file_nonce')) {
+		$file_name = sanitize_text_field($_GET['my_plugin_delete_file']);
+		$file_path = WP_CONTENT_DIR . '/' . $file_name;
+
+		if (file_exists($file_path)) {
+			unlink($file_path);
+			wp_redirect($_SERVER['HTTP_REFERER']);
+			exit;
+		} else {
+			echo 'Bestand niet gevonden.';
+		}
+	}
+}
+add_action('init', 'my_plugin_delete_file');
+
 /**
  * The finance page
  */
 function reservation_financial_page() {
+    global $wpdb;
+
+    $query = $wpdb->get_results(
+            "
+            SELECT * FROM `bookings` where YEAR(start_date) = YEAR(CURDATE());
+            "
+    );
+
+    $totalRevenue = 0;
+
+    foreach ($query as $booking) {
+        $totalRevenue += $booking->total_price;
+    }
+
+    $totalDaysRented = 0;
+
+    foreach ($query as $booking) {
+        $interval = (new DateTime($booking->end_date))->diff(new DateTime($booking->start_date));
+	    $totalDaysRented += $interval->days;
+    }
+
+    if (isset($_POST['submit_report'])) {
+        $year = $_POST['report_year'];
+
+        $query = $wpdb->get_results(
+                "
+                 SELECT * FROM `bookings` where YEAR(start_date) = YEAR($year);
+                "
+        );
+
+	    $upload_dir = wp_upload_dir();
+	    $file_path = $upload_dir['basedir'] . '_report_door_' . (wp_get_current_user())->user_login . '_jaartal_' . $_POST['report_year'] . '.txt';
+
+	    $file_content = "Dit is een voorbeeldbestand gemaakt via een WordPress-plugin.\n";
+	    $file_content .= "Aangemaakt op: " . date('Y-m-d H:i:s') . "\n";
+
+	    if (file_exists($file_path)) {
+		    echo 'Het bestand bestaat al.';
+		    return;
+	    }
+
+	    $file_handle = fopen($file_path, 'w');
+	    if ($file_handle) {
+		    fwrite($file_handle, $file_content);
+		    fclose($file_handle);
+		    echo 'Bestand succesvol aangemaakt op: ' . $file_path;
+	    } else {
+		    echo 'Het bestand kon niet worden aangemaakt.';
+	    }
+    }
+
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
@@ -1047,52 +1263,16 @@ function reservation_financial_page() {
         <h1>Statistieken</h1>
         <div class="row">
             <div class="col-sm bg-dark text-white rounded p-2 m-2">
-                <h5 class="text-center">Totale omzet 2024</h5>
+                <h5 class="text-center">Totale omzet <?php echo date('Y'); ?></h5>
                 <br>
-                <h5 class="text-center">30 euro</h5>
+                <h5 class="text-center">€<?php echo $totalRevenue; ?></h5>
             </div>
             <div class="col-sm bg-dark text-white rounded p-2 m-2">
-                <h5 class="text-center">Aantal dagen verhuurd 2024</h5>
+                <h5 class="text-center">Aantal dagen verhuurd <?php echo date('Y'); ?></h5>
                 <br>
-                <h5 class="text-center">30 dagen</h5>
-            </div>
-            <div class="col-sm bg-dark text-white rounded p-2 m-2">
-                <h5 class="text-center">Aantal klanten die gehuurd hebben 2024</h5>
-                <br>
-                <h5 class="text-center">30 klanten</h5>
+                <h5 class="text-center"><?php echo $totalDaysRented; ?></h5>
             </div>
         </div>
-    </div>
-
-    <div class="container">
-        <h1>Laatste x boekingen</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Datum</th>
-                <th scope="col">Huis</th>
-                <th scope="col">Naam</th>
-                <th scope="col">Totale prijs</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>29-11-2024</td>
-                    <td>Voorbeeld huis 1</td>
-                    <td>Kelvin</td>
-                    <td>30 euro</td>
-                </tr>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>29-11-2024</td>
-                    <td>Voorbeeld huis 2</td>
-                    <td>Kelvin</td>
-                    <td>30 euro</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
     <div class="container">
@@ -1103,19 +1283,25 @@ function reservation_financial_page() {
                     <h6>Maak een rapport</h6>
                 </div>
 
-                <div class="form-group mt-2 p-2">
-                    <h5 class="text-dark font-weight-bold">Start datum</h5>
-                    <input type="date" id="date" name="date" class="form-control" value="" required>
-                </div>
+                <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
+                    <select class="form-select" aria-label="" id="report_year" name="report_year">
+                        <option selected>Selecteer een jaar...</option>
+                        <option value=2024>2024</option>
+                        <option value=2025>2025</option>
+                        <option value=2026>2026</option>
+                        <option value=2027>2027</option>
+                        <option value=2028>2028</option>
+                        <option value=2029>2029</option>
+                        <option value=2030>2030</option>
+                        <option value=2031>2031</option>
+                        <option value=2032>2032</option>
+                    </select>
 
-                <div class="form-group mt-2 p-2">
-                    <h5 class="text-dark font-weight-bold">Eind datum</h5>
-                    <input type="date" id="date" name="date" class="form-control" value="" required>
-                </div>
+                    <div class="mt-2 p-2">
+                        <button type="submit" name="submit_report" class="btn btn-success">Maak omzet rapport</button>
+                    </div>
+                </form>
 
-                <div class="mt-2 p-2">
-                    <button type="button" class="btn btn-success">Maak omzet rapport</button>
-                </div>
             </div>
             <div class="col-sm">
                 <div class="ps-2">
@@ -1126,30 +1312,38 @@ function reservation_financial_page() {
                     <thead>
                         <tr>
                             <th scope="col">Naam</th>
-                            <th scope="col">Datum</th>
-                            <th scope="col">Gemaakt door</th>
                             <th scope="col">Acties</th>
                         </tr>
                     </thead>
                     <tbody>
+                    <?php
+                    foreach (glob(WP_CONTENT_DIR . '/' . 'uploads_report_' . '*') as $file) {
+                        ?>
                         <tr>
-                            <th scope="row">rapport_van_29_11_tot_29_11_jr_2024.pdf</th>
-                            <td>29-11-2024</td>
-                            <td>Kelvin de Reus</td>
+                            <th scope="row"><?php echo basename($file) ?></th>
                             <td>
-                                <a href="#"><span class="dashicons dashicons-download"></span></a>
-                                <a href="#"><span class="dashicons dashicons-trash"></span></a>
+                                <?php
+                                $file_name = basename($file);
+                                $download_url = add_query_arg('my_plugin_download_file', $file_name , home_url());
+                                ?>
+                                <a href="<?php echo esc_url($download_url); ?>"><span class="dashicons dashicons-download"></span></a>
+	                            <?php
+	                            $file_name = basename($file);
+	                            $delete_url = add_query_arg(
+		                            array(
+			                            'my_plugin_delete_file' => $file_name,
+			                            '_wpnonce' => wp_create_nonce('delete_file_nonce'),
+		                            ),
+		                            home_url()
+	                            );
+	                            ?>
+                                <a href="<?php echo esc_url($delete_url); ?>" onclick="return confirm('Weet je zeker dat je dit bestand wilt verwijderen?');"><span class="dashicons dashicons-trash"></span></a>
                             </td>
                         </tr>
-                        <tr>
-                            <th scope="row">rapport_van_29_11_tot_29_11_jr_2024.pdf</th>
-                            <td>29-11-2024</td>
-                            <td>Kelvin de Reus</td>
-                            <td>
-                                <a href="#"><span class="dashicons dashicons-download"></span></a>
-                                <a href="#"><span class="dashicons dashicons-trash"></span></a>
-                            </td>
-                        </tr>
+                        <?php
+                    }
+                    ?>
+
                     </tbody>
                 </table>
             </div>
