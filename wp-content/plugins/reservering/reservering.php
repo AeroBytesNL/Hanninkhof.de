@@ -575,8 +575,6 @@ function reservation_view_page() {
     </div>
 
     <input type="hidden" name="days_to_rent" id="selected_days" value="">
-    <input type="hidden" name="start_date" id="start_date" value="">
-    <input type="hidden" name="end_date" id="end_date" value="">
 
     <hr>
 
@@ -703,13 +701,13 @@ function reservation_view_page() {
             <div class="col">
                 <div class="mb-3">
                     <label for="name_first_second" class="form-label">Voornaam</label>
-                    <input type="text" class="form-control" id="name_first_second" name="name_second" aria-describedby="" value="<?php echo $booking->name_first_second ?>">
+                    <input type="text" class="form-control" id="name_first_second" name="name_first_second" aria-describedby="" value="<?php echo $booking->name_first_second ?>">
                 </div>
             </div>
             <div class="col">
                 <div class="mb-3">
                     <label for="name_last_second" class="form-label">Achternaam</label>
-                    <input type="text" class="form-control" id="name_last_second" name="name_second" aria-describedby="" value="<?php echo $booking->name_last_second ?>">
+                    <input type="text" class="form-control" id="name_last_second" name="name_last_second" aria-describedby="" value="<?php echo $booking->name_last_second ?>">
                 </div>
             </div>
 
@@ -1716,13 +1714,13 @@ function booking_form() {
                     <div class="col">
                         <div class="mb-3">
                             <label for="name_first_second" class="form-label">Voornaam</label>
-                            <input type="text" class="form-control" id="name_first_second" name="name_second" aria-describedby="">
+                            <input type="text" class="form-control" id="name_first_second" name="name_first_second" aria-describedby="">
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
                             <label for="name_last_second" class="form-label">Achternaam</label>
-                            <input type="text" class="form-control" id="name_last_second" name="name_second" aria-describedby="">
+                            <input type="text" class="form-control" id="name_last_second" name="name_last_second" aria-describedby="">
                         </div>
                     </div>
 
