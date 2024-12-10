@@ -868,7 +868,7 @@ function reservation_view_page() {
 
     <button type="submit" name="booking_view_accept_booking_submit" class="btn btn-success d-inline">Accepteer boeking</button>
 
-    <button type="submit" name="booking_view_accept_payment_submit" class="btn btn-success d-inline">Accepteer boeking</button>
+    <button type="submit" name="booking_view_accept_payment_submit" class="btn btn-info d-inline">Accepteer betaling</button>
 
     <button type="submit" name="booking_view_deny_submit" class="btn btn-warning d-inline">Wijs boeking af</button>
 
