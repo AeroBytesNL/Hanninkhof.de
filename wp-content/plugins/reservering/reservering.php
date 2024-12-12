@@ -10,6 +10,11 @@ Author URI: https://auticodes.nl
 
 /**
  * CREATE TABLE `<DB NAME HERE>`.`bookings` (`id` INT NOT NULL AUTO_INCREMENT , `start_date` DATE NOT NULL , `end_date` DATE NOT NULL , `first_name` VARCHAR(255) NOT NULL , `last_name` VARCHAR(255) NOT NULL , `birthdate` DATE NOT NULL , `nationality` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , `city` VARCHAR(255) NOT NULL , `zipcode` VARCHAR(255) NOT NULL , `id_number` VARCHAR(255) NULL DEFAULT NULL , `email` VARCHAR(255) NOT NULL , `phone` VARCHAR(255) NOT NULL , `animals` INT(2) NULL DEFAULT NULL , `child_bed` INT(2) NULL DEFAULT NULL , `comments` TEXT NULL DEFAULT NULL , `amount_persons` INT(10) NOT NULL , `name_first_second` VARCHAR(255) NULL DEFAULT NULL , `name_last_second` VARCHAR(255) NULL DEFAULT NULL , `city_second` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_2` VARCHAR(255) NULL DEFAULT NULL , `birthdate_second` DATE NULL DEFAULT NULL , `id_number_second` VARCHAR(255) NULL DEFAULT NULL , `first_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `last_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `city_thirth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_3` VARCHAR(255) NULL DEFAULT NULL , `birthdate_thirth` VARCHAR(255) NULL DEFAULT NULL , `id_number_thirth` VARCHAR(255) NULL DEFAULT NULL , `first_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `last_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `city_fourth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_4` VARCHAR(255) NULL DEFAULT NULL , `birthdate_fourth` DATE NULL DEFAULT NULL , `id_number_fourth` VARCHAR(255) NULL DEFAULT NULL , `house_rented` VARCHAR(255) NOT NULL , `discount_amount` INT(255) NULL DEFAULT NULL , `total_price` BIGINT(1000) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ * CREATE TABLE `booking_settings` (
+ * `name` varchar(255) NOT NULL,
+ * `value` varchar(255) NOT NULL
+ * ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+ * COMMIT;
  */
 
 function create_menus() {
@@ -1383,7 +1388,7 @@ function reservation_settings_page() {
     <div class="container">
         <h2>Email adressen om nieuwe boekingen op te ontvangen</h1>
 
-        <form>
+        <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
             <div class="mb-3">
                 <label for="email_one" class="form-label">Email adres 1</label>
                 <input type="email"  style="max-width: 300px;" class="form-control" id="email_one" placeholder="name@example.com">
@@ -1391,7 +1396,7 @@ function reservation_settings_page() {
 
             <div class="mb-3">
                 <label for="email_one" class="form-label">Email adres 2</label>
-                <input type="email"  style="max-width: 300px;" class="form-control" id="email_one" placeholder="name@example.com">
+                <input type="email"  style="max-width: 300px;" class="form-control" id="email_two" placeholder="name@example.com">
             </div>
 
             <button type="submit" class="btn btn-primary">Opslaan</button>
@@ -1400,6 +1405,39 @@ function reservation_settings_page() {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <?php
+}
+
+function email_customer_new_booking($email) {
+	$message = "
+    <!doctype html>
+    <html lang='en'>
+      <head>
+        <meta charset='utf-8'>
+        <meta content='width=device-width, initial-scale=1' name='viewport'>
+        <link crossorigin='anonymous' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css'
+              integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' rel='stylesheet'>
+      </head>
+
+      <body>
+      <h1>Hello, world!</h1>
+
+      <script crossorigin='anonymous' integrity='sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4' src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js'></script>
+      </body>
+    </html>
+  ";
+
+	$sent = wp_mail(
+		sanitize_email($email),
+		'Reservering',
+		'Test',
+		array('Content-Type: text/html; charset=UTF-8'),
+	);
+	if (!$sent) {
+		echo 'Email niet verstuurd!';
+		return;
+	}
+	echo 'Er is een reservering gemaakt!';
+	return;
 }
 
 function handle_booking_form_submit() {
@@ -1460,20 +1498,19 @@ function handle_booking_form_submit() {
         return;
     }
 
+	  email_customer_new_booking($_POST['email']);
     echo 'Je aanvraag is verstuurd';
 }
 
 function fetch_bookings_for_home() {
     global $wpdb;
 
-    // Controleer of de AJAX-aanroep geldig is
     if (!isset($_POST['home']) || empty($_POST['home'])) {
         wp_send_json_error('Geen huis geselecteerd.');
     }
 
     $home = sanitize_text_field($_POST['home']);
 
-    // Haal de boekingen op voor het geselecteerde huis
     $bookings = $wpdb->get_results(
         $wpdb->prepare(
             "SELECT START_DATE, END_DATE FROM bookings WHERE home = %s",
@@ -1482,7 +1519,6 @@ function fetch_bookings_for_home() {
         ARRAY_A
     );
 
-    // Stuur boekingen terug als JSON
     wp_send_json_success($bookings);
 }
 
@@ -1492,7 +1528,6 @@ add_action('wp_ajax_nopriv_fetch_bookings_for_home', 'fetch_bookings_for_home');
 function enqueue_custom_scripts() {
     wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/custom.js', ['jquery'], null, true);
 
-    // AJAX URL beschikbaar maken
     wp_localize_script('custom-script', 'ajaxurl', admin_url('admin-ajax.php'));
 }
 
