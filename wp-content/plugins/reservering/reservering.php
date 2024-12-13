@@ -1378,6 +1378,31 @@ function reservation_financial_page() {
  * The settings page
  */
 function reservation_settings_page() {
+    global $wpdb;
+
+    $email_one_booking = $wpdb->get_results(
+        "
+          SELECT * FROM `booking_settings` WHERE name='send_new_booking_email_one';
+        "
+    );
+
+    $email_two_booking = $wpdb->get_results(
+      "
+            SELECT * FROM `booking_settings` WHERE name='send_new_booking_email_two';
+          "
+    );
+
+    if (isset($_POST['setting_form_submit'])) {
+	      $email_one = $_POST['email_one'];
+	      $wpdb->query($wpdb->prepare("REPLACE INTO `booking_settings` (`name`, `value`) VALUES (%s, %s)", 'send_new_booking_email_one', $email_one));
+
+        if (isset($_POST['email_two'])) {
+          $email_two = $_POST['email_two'];
+	        $wpdb->query($wpdb->prepare("REPLACE INTO `booking_settings` (`name`, `value`) VALUES (%s, %s)", 'send_new_booking_email_two', $email_two));
+        }
+    }
+
+
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
@@ -1387,19 +1412,19 @@ function reservation_settings_page() {
 
     <div class="container">
         <h2>Email adressen om nieuwe boekingen op te ontvangen</h1>
-
+        <?php echo var_dump($email_one_booking[0]->value); ?>
         <form action="<?php esc_url($_SERVER['REQUEST_URI']) ?>" method="POST">
             <div class="mb-3">
                 <label for="email_one" class="form-label">Email adres 1</label>
-                <input type="email"  style="max-width: 300px;" class="form-control" id="email_one" placeholder="name@example.com">
+                <input type="email" style="max-width: 300px;" class="form-control" id="email_one" name="email_one" placeholder="name@example.com" value="<?php echo $email_one_booking[0]->value ?? '' ?>" aria-describedby="">
             </div>
 
             <div class="mb-3">
                 <label for="email_one" class="form-label">Email adres 2</label>
-                <input type="email"  style="max-width: 300px;" class="form-control" id="email_two" placeholder="name@example.com">
+                <input type="email" style="max-width: 300px;" class="form-control" id="email_two" name="email_two" placeholder="name@example.com" value="<?php echo $email_two_booking[0]->value ?? '' ?>">
             </div>
 
-            <button type="submit" class="btn btn-primary">Opslaan</button>
+            <button type="submit" name="setting_form_submit" class="btn btn-primary">Opslaan</button>
         </form>
     </div>
 
@@ -1587,7 +1612,7 @@ function booking_form() {
                     </select>
                     <select id="year-select" name="year">
                     </select>
-                    <!-- 
+                    <!--
                     <li id="month-year" name="month-year">
                         November<br>
                         <span style="font-size:18px" id="year">2025</span>
