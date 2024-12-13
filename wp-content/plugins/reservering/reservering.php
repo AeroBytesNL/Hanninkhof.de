@@ -1382,14 +1382,14 @@ function reservation_settings_page() {
 
     $email_one_booking = $wpdb->get_results(
         "
-          SELECT * FROM `booking_settings` WHERE name='send_new_booking_email_one';
+            SELECT * FROM `booking_settings` WHERE name='send_new_booking_email_one';
         "
     );
 
     $email_two_booking = $wpdb->get_results(
-      "
+        "
             SELECT * FROM `booking_settings` WHERE name='send_new_booking_email_two';
-          "
+        "
     );
 
     if (isset($_POST['setting_form_submit'])) {
@@ -1401,7 +1401,6 @@ function reservation_settings_page() {
 	        $wpdb->query($wpdb->prepare("REPLACE INTO `booking_settings` (`name`, `value`) VALUES (%s, %s)", 'send_new_booking_email_two', $email_two));
         }
     }
-
 
     ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
