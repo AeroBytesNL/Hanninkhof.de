@@ -71,6 +71,15 @@
 			'reserveringen-huizen-aanmaken',
 			'reservation_create_house_page',
 		);
+	  
+	  add_submenu_page(
+		  '',
+		  '',
+		  '',
+		  'manage_options',
+		  'reserveringen-huizen-wijzigen',
+		  'reservation_edit_house_page',
+	  );
 		
 		add_submenu_page(
 			'reserveringen',
@@ -1188,7 +1197,7 @@
 						echo 'Ja';
 					} ?></td>
             <td>
-              <a href="">
+              <a href="<?php echo get_site_url() . '/wp-admin/index.php?page=reserveringen-huizen-wijzigen&house_id=' . $house->id ?>">
                 <span class="dashicons dashicons-edit"></span>
               </a>
               <a href="">
@@ -1209,7 +1218,89 @@
               crossorigin="anonymous"></script>
 		<?php
 	}
-	
+  
+	/**
+	 * Edit home page
+	 */
+  function reservation_edit_house_page() {
+    global $wpdb;
+    
+    $house = $wpdb->get_results(
+            "SELECT * FROM `houses` WHERE id = " . $_GET['house_id'] . ";"
+    );
+	  
+	  if ( isset( $_POST['edit_house_submit'] ) ) {
+		  $res = $wpdb->update(
+			  'houses',
+			  array(
+				  'name' => $_POST['home_name'],
+				  'price' => intval($_POST['home_price_per_person']),
+				  'max_persons' => intval($_POST['max_persons']),
+				  'animals_allowed' => intval($_POST['home_animals_allowed'] ?? 0),
+			  ),
+			  array(
+				  'id' => $_POST['house_id'],
+			  )
+		  );
+    
+		  echo 'Huis is aangepast. Herlaadt pagina om wijzigingen te zien.';
+	  }
+    
+    ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <h1 class="mt-2 ml-2">Huis bewerken</h1>
+
+    <hr>
+
+    <div class="container" style="max-width: 500px;">
+      <form action="<?php esc_url( $_SERVER['REQUEST_URI'] ) ?>" method="POST">
+        <div class="mb-3">
+          <label for="home_name" class="form-label">Huis naam</label>
+          <input type="text" class="form-control" id="home_name" name="home_name" aria-describedby=""
+                 value="<?php echo $house[0]->name ?>">
+        </div>
+        
+        <input type="hidden" name="house_id" value="<?php echo $house[0]->id ?>">
+        
+        <label for="home_price_per_person" class="form-label">Prijs p.p</label>
+        <div class="input-group mb-3">
+          <span class="input-group-text">€</span>
+          <input type="text" class="form-control" aria-label="" name="home_price_per_person"
+            value="<?php echo $house[0]->price ?>"
+          >
+          <span class="input-group-text">.00</span>
+        </div>
+
+        <label for="max_persons" class="form-label">Max aantal personen</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" aria-label="" name="max_persons"
+            value="<?php echo $house[0]->max_persons ?>"
+          >
+          <span class="input-group-text">personen</span>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="home_animals_allowed"
+                 name="home_animals_allowed"
+            <?php if ( $house[0]->animals_allowed == 1 ) {echo 'checked';} ?>
+          >
+          <label class="form-check-label" for="flexCheckDefault">
+            Huisdieren
+          </label>
+        </div>
+
+        <button type="submit" name="edit_house_submit" class="btn btn-primary">Opslaan</button>
+        <form>
+    </div
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+	  <?php
+  }
+  
 	/**
 	 * The create house page
 	 */
