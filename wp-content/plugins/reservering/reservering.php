@@ -7,8 +7,9 @@
   Author: AutiCodes
   Author URI: https://auticodes.nl
   */
-  use vendor\phpmailer\phpmailer\src\SMTP;
-  use vendor\phpmailer\phpmailer\src\Exception;
+  
+  require_once ABSPATH . '/vendor/autoload.php';
+  
 	/**
 	 * CREATE TABLE `<DB NAME HERE>`.`bookings` (`id` INT NOT NULL AUTO_INCREMENT , `start_date` DATE NOT NULL , `end_date` DATE NOT NULL , `first_name` VARCHAR(255) NOT NULL , `last_name` VARCHAR(255) NOT NULL , `birthdate` DATE NOT NULL , `nationality` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , `city` VARCHAR(255) NOT NULL , `zipcode` VARCHAR(255) NOT NULL , `id_number` VARCHAR(255) NULL DEFAULT NULL , `email` VARCHAR(255) NOT NULL , `phone` VARCHAR(255) NOT NULL , `animals` INT(2) NULL DEFAULT NULL , `child_bed` INT(2) NULL DEFAULT NULL , `comments` TEXT NULL DEFAULT NULL , `amount_persons` INT(10) NOT NULL , `name_first_second` VARCHAR(255) NULL DEFAULT NULL , `name_last_second` VARCHAR(255) NULL DEFAULT NULL , `city_second` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_2` VARCHAR(255) NULL DEFAULT NULL , `birthdate_second` DATE NULL DEFAULT NULL , `id_number_second` VARCHAR(255) NULL DEFAULT NULL , `first_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `last_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `city_thirth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_3` VARCHAR(255) NULL DEFAULT NULL , `birthdate_thirth` VARCHAR(255) NULL DEFAULT NULL , `id_number_thirth` VARCHAR(255) NULL DEFAULT NULL , `first_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `last_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `city_fourth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_4` VARCHAR(255) NULL DEFAULT NULL , `birthdate_fourth` DATE NULL DEFAULT NULL , `id_number_fourth` VARCHAR(255) NULL DEFAULT NULL , `house_rented` VARCHAR(255) NOT NULL , `discount_amount` INT(255) NULL DEFAULT NULL , `total_price` BIGINT(1000) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 	 * CREATE TABLE `booking_settings` (
@@ -104,34 +105,31 @@
 	add_action( 'admin_menu', 'create_menus' );
   
   function send_email() {
-    require_once ABSPATH . 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
-    require_once ABSPATH . 'vendor/phpmailer/phpmailer/src/SMTP.php';
-    require_once ABSPATH . 'vendor/phpmailer/phpmailer/src/Exception.php';
 
-    try {
-      $mail = new PHPMailer();
-      $mail->isSMTP();
-      $mail->Host = getenv("MAIL_HOST");
-      $mail->SMTPAuth = false;
-      $mail->Username = getenv("MAIL_USERNAME");
-      $mail->Password = getenv("MAIL_PASSWORD");
-      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-      $mail->Port = 587;
-      $mail->setFrom(getenv("MAIL_USERNAME"), 'Reserveringen');
-      $mail->addAddress("prive@auticodes.nl", "Prive");
-      $mail->isHTML(true);
-      $mail->Subject = 'Reservering';
-      $mail->Body = 'Hier is een bericht';
-      $mail->send();
-      
-      if ($mail->send()) {
-          echo 'Email sent!';
-      } else {
-          echo 'Email not sent!';
-      }
-    } catch (Exception $e) {
-      echo 'Message could not be sent.';
-    }
+//    try {
+//      $mail = new PHPMailer();
+//      $mail->isSMTP();
+//      $mail->Host = getenv("MAIL_HOST");
+//      $mail->SMTPAuth = false;
+//      $mail->Username = getenv("MAIL_USERNAME");
+//      $mail->Password = getenv("MAIL_PASSWORD");
+//      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+//      $mail->Port = 587;
+//      $mail->setFrom(getenv("MAIL_USERNAME"), 'Reserveringen');
+//      $mail->addAddress("prive@auticodes.nl", "Prive");
+//      $mail->isHTML(true);
+//      $mail->Subject = 'Reservering';
+//      $mail->Body = 'Hier is een bericht';
+//      $mail->send();
+//
+//      if ($mail->send()) {
+//          echo 'Email sent!';
+//      } else {
+//          echo 'Email not sent!';
+//      }
+//    } catch (Exception $e) {
+//      echo 'Message could not be sent.';
+//    }
   }
   
   send_email();
@@ -2217,7 +2215,7 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
             <input type="hidden" id="total_price_hidden" name="total_price_hidden" value=""></input>
           </div>
 
-          <button type="submit" name="booking_form_submit" class="btn btn-primary">Verzend</button>
+          <button type="submit" name="booking_form_submit" class="btn btn-primary" style="background-color: #0E3E1A">Verzend</button>
         </form>
       </div>
 
@@ -2225,7 +2223,7 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
           .month {
               padding: 10px 25px;
               width: 100%;
-              background: #1d2327;
+              background: #0E3E1A;
               text-align: center;
           }
 
@@ -2254,7 +2252,7 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
           .weekdays {
               margin: 0;
               padding: 10px 0;
-              background-color: #ddd;
+              background-color: #0E3E1A;
           }
 
           .weekdays li {
@@ -2437,21 +2435,61 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
           function updateCalendar() {
               const selectedMonth = parseInt(monthSelect.value);
               const selectedYear = parseInt(yearSelect.value);
-              const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
-
-              daysToRent.innerHTML = "";
-
-              for (let day = 1; day <= daysInMonth; day++) {
-                  const li = document.createElement("li");
-                  li.setAttribute("data-day", day);
-                  li.textContent = day;
-                  daysToRent.appendChild(li);
+          
+              const selectedHome = homeSelect.value;
+          
+              if (typeof ajaxurl === 'undefined') {
+                  console.error('ajaxurl is niet gedefinieerd');
+                  return;
               }
+          
+              fetch(ajaxurl, {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                  body: new URLSearchParams({
+                      action: 'fetch_bookings_for_home',
+                      home: selectedHome,
+                      year: selectedYear,
+                      month: selectedMonth,
+                  }),
+              })
+              .then((response) => response.json())
+              .then((data) => {
+                  if (data.success) {
+                      const bookings = data.data;
+          
+                      const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
+                      daysToRent.innerHTML = "";
+          
+                      for (let day = 1; day <= daysInMonth; day++) {
+                          const li = document.createElement("li");
+                          li.setAttribute("data-day", day);
+                          li.textContent = day;
+          
+                          // Controleer of de dag geboekt is
+                          const currentDate = new Date(selectedYear, selectedMonth, day);
+                          const isBooked = bookings.some((booking) => {
+                              const startDate = new Date(booking.START_DATE);
+                              const endDate = new Date(booking.END_DATE);
+                              return currentDate >= startDate && currentDate <= endDate;
+                          });
+          
+                          if (isBooked) {
+                              li.classList.add('booked');
+                          }
+          
+                          daysToRent.appendChild(li);
+                      }
+                  } else {
+                      console.error(data.data || 'Geen boekingen gevonden.');
+                  }
+              })
+              .catch((error) => console.error('Error fetching bookings:', error));
           }
-
+          
           monthSelect.addEventListener("change", updateCalendar);
           yearSelect.addEventListener("change", updateCalendar);
-
+          
           updateCalendar();
 
           // Extra persons selector
