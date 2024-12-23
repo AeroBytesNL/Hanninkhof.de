@@ -7,7 +7,8 @@
   Author: AutiCodes
   Author URI: https://auticodes.nl
   */
-	
+  use vendor\phpmailer\phpmailer\src\SMTP;
+  use vendor\phpmailer\phpmailer\src\Exception;
 	/**
 	 * CREATE TABLE `<DB NAME HERE>`.`bookings` (`id` INT NOT NULL AUTO_INCREMENT , `start_date` DATE NOT NULL , `end_date` DATE NOT NULL , `first_name` VARCHAR(255) NOT NULL , `last_name` VARCHAR(255) NOT NULL , `birthdate` DATE NOT NULL , `nationality` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , `city` VARCHAR(255) NOT NULL , `zipcode` VARCHAR(255) NOT NULL , `id_number` VARCHAR(255) NULL DEFAULT NULL , `email` VARCHAR(255) NOT NULL , `phone` VARCHAR(255) NOT NULL , `animals` INT(2) NULL DEFAULT NULL , `child_bed` INT(2) NULL DEFAULT NULL , `comments` TEXT NULL DEFAULT NULL , `amount_persons` INT(10) NOT NULL , `name_first_second` VARCHAR(255) NULL DEFAULT NULL , `name_last_second` VARCHAR(255) NULL DEFAULT NULL , `city_second` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_2` VARCHAR(255) NULL DEFAULT NULL , `birthdate_second` DATE NULL DEFAULT NULL , `id_number_second` VARCHAR(255) NULL DEFAULT NULL , `first_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `last_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `city_thirth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_3` VARCHAR(255) NULL DEFAULT NULL , `birthdate_thirth` VARCHAR(255) NULL DEFAULT NULL , `id_number_thirth` VARCHAR(255) NULL DEFAULT NULL , `first_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `last_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `city_fourth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_4` VARCHAR(255) NULL DEFAULT NULL , `birthdate_fourth` DATE NULL DEFAULT NULL , `id_number_fourth` VARCHAR(255) NULL DEFAULT NULL , `house_rented` VARCHAR(255) NOT NULL , `discount_amount` INT(255) NULL DEFAULT NULL , `total_price` BIGINT(1000) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 	 * CREATE TABLE `booking_settings` (
@@ -101,7 +102,40 @@
 	}
 	
 	add_action( 'admin_menu', 'create_menus' );
-	
+  
+  function send_email() {
+    require_once ABSPATH . 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require_once ABSPATH . 'vendor/phpmailer/phpmailer/src/SMTP.php';
+    require_once ABSPATH . 'vendor/phpmailer/phpmailer/src/Exception.php';
+
+    try {
+      $mail = new PHPMailer();
+      $mail->isSMTP();
+      $mail->Host = getenv("MAIL_HOST");
+      $mail->SMTPAuth = false;
+      $mail->Username = getenv("MAIL_USERNAME");
+      $mail->Password = getenv("MAIL_PASSWORD");
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+      $mail->Port = 587;
+      $mail->setFrom(getenv("MAIL_USERNAME"), 'Reserveringen');
+      $mail->addAddress("prive@auticodes.nl", "Prive");
+      $mail->isHTML(true);
+      $mail->Subject = 'Reservering';
+      $mail->Body = 'Hier is een bericht';
+      $mail->send();
+      
+      if ($mail->send()) {
+          echo 'Email sent!';
+      } else {
+          echo 'Email not sent!';
+      }
+    } catch (Exception $e) {
+      echo 'Message could not be sent.';
+    }
+  }
+  
+  send_email();
+  
 	function get_admin_bookings() {
 		global $wpdb;
 		
@@ -350,7 +384,7 @@
               crossorigin="anonymous"></script>
 		<?php
 	}
-	
+ 
 	function handle_reservation_view_update() {
 		global $wpdb;
 		
@@ -436,7 +470,8 @@
 	 */
 	function reservation_view_page() {
 		global $wpdb;
-		
+    send_email();
+
 		$booking_id = intval( $_GET['booking_id'] );
 		
 		if ( isset( $_POST['booking_view_update_submit'] ) ) {
