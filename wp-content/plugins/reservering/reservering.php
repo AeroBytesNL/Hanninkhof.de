@@ -2215,7 +2215,7 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
             <input type="hidden" id="total_price_hidden" name="total_price_hidden" value=""></input>
           </div>
 
-          <button type="submit" name="booking_form_submit" class="btn btn-primary" style="background-color: #0C2A14">Verzend</button>
+          <button type="submit" name="booking_form_submit" class="btn btn-primary" style="background-color: #0E3E1A">Verzend</button>
         </form>
       </div>
 
@@ -2223,7 +2223,7 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
           .month {
               padding: 10px 25px;
               width: 100%;
-              background: #0C2A14;
+              background: #0E3E1A;
               text-align: center;
           }
 
@@ -2252,7 +2252,7 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
           .weekdays {
               margin: 0;
               padding: 10px 0;
-              background-color: #0C2A14;
+              background-color: #0E3E1A;
           }
 
           .weekdays li {
