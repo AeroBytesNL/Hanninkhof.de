@@ -2342,8 +2342,8 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
                   const res = getMinAndMaxDaysFromString(selectedDaysInput.value);
                   const selectedYear = document.getElementById("year-select");
                   const selectedMonth = document.getElementById("month-select");
-                  const startDate = new Date(selectedYear.value, selectedMonth.value, res.minNumber);
-                  const endDate = new Date(selectedYear.value, selectedMonth.value, res.maxNumber);
+                  const startDate = new Date(selectedYear.value, selectedMonth.value - 1, res.minNumber);
+                  const endDate = new Date(selectedYear.value, selectedMonth.value - 1, res.maxNumber);
 
                   document.getElementById('start_date').value = startDate.toISOString();
                   document.getElementById('end_date').value = endDate.toISOString();
