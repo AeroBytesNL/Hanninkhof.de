@@ -1004,7 +1004,7 @@
             <button type="submit" name="booking_view_deny_submit" class="btn btn-warning d-inline">Wijs boeking af
             </button>
 
-            <button type="submit" name="booking_view_delete_submit" class="btn btn-danger d-inline">verwijder boeking
+            <button type="submit" name="booking_view_delete_submit" class="btn btn-danger d-inline">Verwijder boeking
             </button>
 
           </form>
