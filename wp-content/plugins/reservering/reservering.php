@@ -1021,6 +1021,29 @@
 	 * The customers page
 	 */
 	function reservation_customers_page() {
+    global $wpdb;
+    
+    $customers = $wpdb->get_results(
+      "
+        SELECT
+          first_name,
+          last_name,
+          MIN(birthdate) AS birthdate,
+          MIN(nationality) AS nationality,
+          MIN(address) AS address,
+          MIN(city) AS city,
+          MIN(zipcode) AS zipcode,
+          MIN(email) AS email,
+          MIN(phone) AS phone,
+          MIN(id_number) AS id_number
+        FROM
+            bookings
+        GROUP BY
+          first_name, last_name;
+      "
+    );
+
+  
 		?>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -1049,70 +1072,28 @@
             <th scope="col">Email</th>
             <th scope="col">Telefoon</th>
             <th scope="col">ID/Paspoort nmr.</th>
-            <th scope="col">Opties</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td scope="row">Kelvin</td>
-            <td>de Reus</td>
-            <td>11-05-2001</td>
-            <td>NL</td>
-            <td>Voorbeeldstraat 1</td>
-            <td>Groenlo</td>
-            <td>1234AB</td>
-            <td>voorbeeld@domein.nl</td>
-            <td>06123456790</td>
-            <td>00000000</td>
-            <td>
-              <a href="">
-                <span class="dashicons dashicons-edit"></span>
-              </a>
-              <a href="">
-                <span class="dashicons dashicons-trash"></span>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td scope="row">Kelvin</td>
-            <td>de Reus</td>
-            <td>11-05-2001</td>
-            <td>NL</td>
-            <td>Voorbeeldstraat 1</td>
-            <td>Groenlo</td>
-            <td>1234AB</td>
-            <td>voorbeeld@domein.nl</td>
-            <td>06123456790</td>
-            <td>00000000</td>
-            <td>
-              <a href="">
-                <span class="dashicons dashicons-edit"></span>
-              </a>
-              <a href="">
-                <span class="dashicons dashicons-trash"></span>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td scope="row">Kelvin</td>
-            <td>de Reus</td>
-            <td>11-05-2001</td>
-            <td>NL</td>
-            <td>Voorbeeldstraat 1</td>
-            <td>Groenlo</td>
-            <td>1234AB</td>
-            <td>voorbeeld@domein.nl</td>
-            <td>06123456790</td>
-            <td>00000000</td>
-            <td>
-              <a href="">
-                <span class="dashicons dashicons-edit"></span>
-              </a>
-              <a href="">
-                <span class="dashicons dashicons-trash"></span>
-              </a>
-            </td>
-          </tr>
+            <?php foreach ( $customers as $customer ) {
+              
+              ?>
+                <tr>
+                <td scope="row"><?php echo $customer->first_name ?></td>
+                <td><?php echo $customer->last_name ?></td>
+                <td><?php echo $customer->birthdate ?></td>
+                <td><?php echo $customer->nationality ?></td>
+                <td><?php echo $customer->address ?> 1</td>
+                <td><?php echo $customer->city ?></td>
+                <td><?php echo $customer->zipcode ?></td>
+                <td><?php echo $customer->email ?></td>
+                <td><?php echo $customer->phone ?></td>
+                <td><?php echo $customer->id_number ?></td>
+              </tr>
+            <?php
+            }
+            ?>
+          </td>
           </tbody>
         </table>
       </div>
