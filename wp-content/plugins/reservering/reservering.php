@@ -456,12 +456,7 @@
 			return;
 		}
 	}
-	
-	function handle_reservation_view_delete() {
-		if ( ! isset( $_POST['booking_view_delete_submit'] ) ) {
-			return;
-		}
-	}
+ 
 	
 	/**
 	 * Shows an specific reservation
@@ -583,6 +578,29 @@
 			echo 'Geen boeking gevonden, OEPS';
 		}
 		
+    if ( isset( $_POST['booking_view_delete_submit'] ) ) {
+      global $wpdb;
+
+      $booking_id = intval( $_POST['booking_id'] );
+
+      $delete_query = $wpdb->delete(
+        'bookings',
+        array(
+          'id' => $booking_id,
+        )
+      );
+      
+      if ( $delete_query === false ) {
+          error_log( 'Query mislukt: ' . $wpdb->last_query );
+          error_log( 'DB Error: ' . $wpdb->last_error );
+          wp_redirect('/wp-admin/index.php?page=reservering-overzicht&status=error');
+          exit;
+      }
+  
+      wp_redirect('/wp-admin/index.php?page=reservering-overzicht&status=success');
+      exit;
+		}
+  
 		?>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -991,7 +1009,9 @@
 
             <h1>Beheer boeking</h1>
 
-            <button type="submit" name="booking_view_update_submit" class="btn btn-primary d-inline">Update</button>
+            <button type="submit" name="booking_view_update_submit" class="btn btn-primary d-inline">
+              Update
+            </button>
 
             <button type="submit" name="booking_view_accept_booking_submit" class="btn btn-success d-inline">Accepteer
               boeking
@@ -1001,10 +1021,12 @@
               betaling
             </button>
 
-            <button type="submit" name="booking_view_deny_submit" class="btn btn-warning d-inline">Wijs boeking af
+            <button type="submit" name="booking_view_deny_submit" class="btn btn-warning d-inline" onclick="return confirm('Weet je zeker dat je deze boeking wilt afwijzen?')">
+              Wijs boeking af
             </button>
 
-            <button type="submit" name="booking_view_delete_submit" class="btn btn-danger d-inline">Verwijder boeking
+            <button type="submit" name="booking_view_delete_submit" class="btn btn-danger d-inline" onclick="return confirm('Weet je zeker dat je deze boeking wilt verwijderen?')">
+              Verwijder boeking
             </button>
 
           </form>
