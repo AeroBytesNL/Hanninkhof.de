@@ -2403,13 +2403,13 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
                   li.setAttribute("data-day", day);
                   li.textContent = day;
                   const currentDate = new Date(selectedYear, selectedMonth - 1, day);
-                  currentDate.setHours(0, 0, 0, 0); // Zet de tijd naar 00:00:00 voor vergelijking
+                  currentDate.setHours(0, 0, 0, 0);
 
                   const isBooked = bookings.some((booking) => {
                       const startDate = new Date(booking.start_date);
                       const endDate = new Date(booking.end_date);
-                      startDate.setHours(0, 0, 0, 0); // Zet de tijd naar 00:00:00 voor vergelijking
-                      endDate.setHours(23, 59, 59, 999); // Zet de tijd naar het einde van de dag
+                      startDate.setHours(0, 0, 0, 0);
+                      endDate.setHours(23, 59, 59, 999);
 
                       return currentDate >= startDate && currentDate <= endDate;
                   });
@@ -2439,7 +2439,9 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
           function updateCalendar() {
               const selectedMonth = parseInt(monthSelect.value);
               const selectedYear = parseInt(yearSelect.value);
-          
+              
+              console.log(selectedMonth);
+              console.log(selectedYear);
               const selectedHome = homeSelect.value;
           
               if (typeof ajaxurl === 'undefined') {
@@ -2469,19 +2471,22 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
                           const li = document.createElement("li");
                           li.setAttribute("data-day", day);
                           li.textContent = day;
-          
-                          // Controleer of de dag geboekt is
-                          const currentDate = new Date(selectedYear, selectedMonth, day);
+                          const currentDate = new Date(selectedYear, selectedMonth - 1, day);
+                          currentDate.setHours(0, 0, 0, 0);
+        
                           const isBooked = bookings.some((booking) => {
-                              const startDate = new Date(booking.START_DATE);
-                              const endDate = new Date(booking.END_DATE);
+                              const startDate = new Date(booking.start_date);
+                              const endDate = new Date(booking.end_date);
+                              startDate.setHours(0, 0, 0, 0);
+                              endDate.setHours(23, 59, 59, 999);
+        
                               return currentDate >= startDate && currentDate <= endDate;
                           });
-          
+        
                           if (isBooked) {
                               li.classList.add('booked');
                           }
-          
+        
                           daysToRent.appendChild(li);
                       }
                   } else {
