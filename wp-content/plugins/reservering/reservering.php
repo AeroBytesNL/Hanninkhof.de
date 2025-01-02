@@ -1856,7 +1856,9 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
 
           <div class="month">
             <ul>
-              <select id="month-select" name="month">
+              <div class="row">
+                <div class="col-sm">
+                            <select id="month-select" class="form-select" name="month">
                 <option value="1">Januari</option>
                 <option value="2">Februari</option>
                 <option value="3">Maart</option>
@@ -1870,8 +1872,14 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
                 <option value="11">November</option>
                 <option value="12">December</option>
               </select>
-              <select id="year-select" name="year">
+                </div>
+                <div class="col-sm">
+                        <select id="year-select" class="form-select" name="year">
               </select>
+                </div>
+              </div>
+  
+      
               <!--
 			  <li id="month-year" name="month-year">
 				  November<br>
@@ -2324,6 +2332,7 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
       <script>
           const daysToRentSecond = document.getElementById("days_to_rent");
           const selectedDaysInput = document.getElementById('selected_days');
+          
           var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 
           daysToRentSecond.addEventListener('click', function (event) {
