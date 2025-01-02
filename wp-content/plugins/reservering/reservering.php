@@ -1,14 +1,12 @@
 <?php
 	/*
   Plugin Name: Reserveringen
-  Plugin URI: https://github.com/AutiCodes/Hanninkhof.de
+  Plugin URI: https://github.com/AeroBytesNL/Hanninkhof.de
   Description: Reserveringen systeem
   Version: 1.0
-  Author: AutiCodes
-  Author URI: https://auticodes.nl
+  Author: AeroBytes
+  Author URI: https://AeroBytes.nl
   */
-  
-  require_once ABSPATH . '/vendor/autoload.php';
   
 	/**
 	 * CREATE TABLE `<DB NAME HERE>`.`bookings` (`id` INT NOT NULL AUTO_INCREMENT , `start_date` DATE NOT NULL , `end_date` DATE NOT NULL , `first_name` VARCHAR(255) NOT NULL , `last_name` VARCHAR(255) NOT NULL , `birthdate` DATE NOT NULL , `nationality` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , `city` VARCHAR(255) NOT NULL , `zipcode` VARCHAR(255) NOT NULL , `id_number` VARCHAR(255) NULL DEFAULT NULL , `email` VARCHAR(255) NOT NULL , `phone` VARCHAR(255) NOT NULL , `animals` INT(2) NULL DEFAULT NULL , `child_bed` INT(2) NULL DEFAULT NULL , `comments` TEXT NULL DEFAULT NULL , `amount_persons` INT(10) NOT NULL , `name_first_second` VARCHAR(255) NULL DEFAULT NULL , `name_last_second` VARCHAR(255) NULL DEFAULT NULL , `city_second` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_2` VARCHAR(255) NULL DEFAULT NULL , `birthdate_second` DATE NULL DEFAULT NULL , `id_number_second` VARCHAR(255) NULL DEFAULT NULL , `first_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `last_name_thirth` VARCHAR(255) NULL DEFAULT NULL , `city_thirth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_3` VARCHAR(255) NULL DEFAULT NULL , `birthdate_thirth` VARCHAR(255) NULL DEFAULT NULL , `id_number_thirth` VARCHAR(255) NULL DEFAULT NULL , `first_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `last_name_fourth` VARCHAR(255) NULL DEFAULT NULL , `city_fourth` VARCHAR(255) NULL DEFAULT NULL , `nationality_person_4` VARCHAR(255) NULL DEFAULT NULL , `birthdate_fourth` DATE NULL DEFAULT NULL , `id_number_fourth` VARCHAR(255) NULL DEFAULT NULL , `house_rented` VARCHAR(255) NOT NULL , `discount_amount` INT(255) NULL DEFAULT NULL , `total_price` BIGINT(1000) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
@@ -17,6 +15,8 @@
 	 * `value` varchar(255) NOT NULL
 	 * ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 	 * COMMIT;
+   *
+   * CREATE TABLE `auticodes_hanninkshof`.`houses` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `price` VARCHAR(255) NOT NULL , `max_persons` INT(12) NULL DEFAULT NULL , `animals_allowed` INT(2) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 	 */
 	
 	function create_menus() {
@@ -1796,7 +1796,7 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
 		
 		$bookings = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT START_DATE, END_DATE FROM bookings WHERE home = %s",
+				"SELECT start_date, end_date FROM `bookings` WHERE `home` = '%s'",
 				$home
 			),
 			ARRAY_A
@@ -1856,23 +1856,30 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
 
           <div class="month">
             <ul>
-              <select id="month-select" name="month">
-                <option value="0">Januari</option>
-                <option value="1">Februari</option>
-                <option value="2">Maart</option>
-                <option value="3">April</option>
-                <option value="4">Mei</option>
-                <option value="5">Juni</option>
-                <option value="6">Juli</option>
-                <option value="7">Augustus</option>
-                .3+
-                <option value="8">September</option>
-                <option value="9">Oktober</option>
-                <option value="10">November</option>
-                <option value="11">December</option>
+              <div class="row">
+                <div class="col-sm">
+                            <select id="month-select" class="form-select" name="month">
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maart</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Augustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
               </select>
-              <select id="year-select" name="year">
+                </div>
+                <div class="col-sm">
+                        <select id="year-select" class="form-select" name="year">
               </select>
+                </div>
+              </div>
+  
+      
               <!--
 			  <li id="month-year" name="month-year">
 				  November<br>
@@ -2325,6 +2332,8 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
       <script>
           const daysToRentSecond = document.getElementById("days_to_rent");
           const selectedDaysInput = document.getElementById('selected_days');
+          
+          var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 
           daysToRentSecond.addEventListener('click', function (event) {
               if (event.target.tagName === 'LI') {
@@ -2366,7 +2375,6 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
 
           homeSelect.addEventListener('change', function () {
               const selectedHome = this.value;
-
               if (typeof ajaxurl === 'undefined') {
                   console.error('ajaxurl is niet gedefinieerd');
                   return;
@@ -2403,12 +2411,14 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
                   const li = document.createElement("li");
                   li.setAttribute("data-day", day);
                   li.textContent = day;
+                  const currentDate = new Date(selectedYear, selectedMonth - 1, day);
+                  currentDate.setHours(0, 0, 0, 0);
 
-                  // Controleer of deze dag in de boekingen valt
-                  const currentDate = new Date(selectedYear, selectedMonth, day);
                   const isBooked = bookings.some((booking) => {
-                      const startDate = new Date(booking.START_DATE);
-                      const endDate = new Date(booking.END_DATE);
+                      const startDate = new Date(booking.start_date);
+                      const endDate = new Date(booking.end_date);
+                      startDate.setHours(0, 0, 0, 0);
+                      endDate.setHours(23, 59, 59, 999);
 
                       return currentDate >= startDate && currentDate <= endDate;
                   });
@@ -2438,7 +2448,9 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
           function updateCalendar() {
               const selectedMonth = parseInt(monthSelect.value);
               const selectedYear = parseInt(yearSelect.value);
-          
+              
+              console.log(selectedMonth);
+              console.log(selectedYear);
               const selectedHome = homeSelect.value;
           
               if (typeof ajaxurl === 'undefined') {
@@ -2468,19 +2480,22 @@ Totaal aantal dagen gehuurd: $totalDaysRented\n
                           const li = document.createElement("li");
                           li.setAttribute("data-day", day);
                           li.textContent = day;
-          
-                          // Controleer of de dag geboekt is
-                          const currentDate = new Date(selectedYear, selectedMonth, day);
+                          const currentDate = new Date(selectedYear, selectedMonth - 1, day);
+                          currentDate.setHours(0, 0, 0, 0);
+        
                           const isBooked = bookings.some((booking) => {
-                              const startDate = new Date(booking.START_DATE);
-                              const endDate = new Date(booking.END_DATE);
+                              const startDate = new Date(booking.start_date);
+                              const endDate = new Date(booking.end_date);
+                              startDate.setHours(0, 0, 0, 0);
+                              endDate.setHours(23, 59, 59, 999);
+        
                               return currentDate >= startDate && currentDate <= endDate;
                           });
-          
+        
                           if (isBooked) {
                               li.classList.add('booked');
                           }
-          
+        
                           daysToRent.appendChild(li);
                       }
                   } else {
